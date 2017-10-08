@@ -1,0 +1,36 @@
+{
+  "name": "RiceChaus",
+  "private": true,
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cloudinary": "^1.4.6",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.1",
+    "express": "^4.13.3",
+    "express-session": "^1.14.2",
+    "md5": "^2.2.1",
+    "mongoose": "^4.6.5",
+    "morgan": "^1.7.0",
+    "multer": "^1.2.0",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "redis": "^2.6.3",
+    "request": "^2.79.0"
+  },
+  "scripts": {
+    "start": "node ./src/index.js",
+    "watch": "nodemon ./src/index.js",
+    "test": "mocha --opts mocha.opts src/**/*.spec.js",
+    "test:watch": "npm run test -- -w"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "dotenv": "^2.0.0",
+    "isomorphic-fetch": "^2.2.1",
+    "mocha": "^3.1.2",
+    "nodemon": "^1.11.0"
+  }
+}

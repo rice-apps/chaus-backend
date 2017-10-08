@@ -1,0 +1,75 @@
+db.users.insert({
+	first: "Jeffrey",
+	netid: "jhw5",
+	cap: 5,
+	week: {
+		mon: [1],
+    	tues: [6],
+    	wed: [2,8],
+    	thurs: [],
+    	fri: [4],
+    	sat: [],
+    	sun: [1]
+	}
+
+})
+
+db.users.insert({
+	first: "Jonathan",
+	netid: "jym2",
+	cap: 5,
+	week: {
+		mon: [3,4],
+    	tues: [6],
+    	wed: [1,2],
+    	thurs: [],
+    	fri: [],
+    	sat: [],
+    	sun: []
+	}
+
+})
+
+db.users.insert({
+	first: "Samantha",
+	netid: "smt6",
+	cap: 5,
+	week: {
+		mon: [],
+    	tues: [],
+    	wed: [],
+    	thurs: [],
+    	fri: [],
+    	sat: [],
+    	sun: []
+	}
+
+})
+
+db.mons.insert({
+  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
+})
+
+db.tues.insert({
+  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
+})
+
+db.weds.insert({
+  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
+})
+
+db.thurs.insert({
+  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
+})
+
+db.fris.insert({
+  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
+})
+
+db.sats.insert({
+  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
+})
+
+db.suns.insert({
+  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
+})
