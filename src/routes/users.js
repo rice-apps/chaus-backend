@@ -16,11 +16,11 @@ const getUsers = (req, res) => {
 }
 const getUser = (req, res) => {
     const netid = req.params.netid
-    User.find({netid: netid}).exec((err, users) => {
+    User.find({netid: netid}).exec((err, user) => {
         if (err) {
             res.send('error has occured')
         } else {
-            res.json(users)
+            res.json(user)
         }
     })
 }
