@@ -13,12 +13,19 @@ var dayShift =
     new Schema(
         {
             hour: Number,
-            availability: [User],
-            schedule: [User]
+            availability: [String],
+            schedule: [String]
         }
     )
 
-var day = new Schema({shifts:[dayShift]})
+var schedule = new Schema({
+    week : [
+        {
+            day: String,
+            shifts: [dayShift]
+        }
+    ]
+})
 
 // var Mons = new Schema(day(1, 13))
 // var Tues = new Schema(day(1, 24))
@@ -37,5 +44,18 @@ var day = new Schema({shifts:[dayShift]})
 //     Sat:Sats,
 //     Sun:Suns
 // })
+schedule.plugin(mongoosastic)
+var Schedule = mongoose.model("schedule", schedule),stream = Schedule.synchronize(),count = 0;
 
-exports.schedule = mongoose.model('monsa', day)
+stream.on('data', function(err, doc){
+    count++;
+});
+stream.on('close', function(){
+    console.log('indexed ' + count + ' documents!');
+});
+stream.on('error', function(err){
+    console.log(err);
+});
+
+exports.schedule = Schedule
+
