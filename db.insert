@@ -46,6 +46,23 @@ db.users.insert({
 
 })
 
+
+db.users.insert({
+	first: "Cade",
+	netid: "cer8",
+	cap: 5,
+	week: {
+		mon: [],
+    	tues: [],
+    	wed: [],
+    	thurs: [],
+    	fri: [],
+    	sat: [],
+    	sun: []
+	}
+
+})
+
 db.mons.insert({
   1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
 })
@@ -73,3 +90,5 @@ db.sats.insert({
 db.suns.insert({
   1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
 })
+
+
