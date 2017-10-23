@@ -2,7 +2,7 @@ RiceChaus Backend Application
 After cloning repo, run the following:
 1. npm install
 2. npm run start
-3. navigate to http://localhost:8080
+3. navigate to http://localhost:8080 
 
 If you have mongoDB installed, you can run the following to access the mlab database: 
 - mongo ds143449.mlab.com:43449/chaus -u jhw5 -p jhw5
