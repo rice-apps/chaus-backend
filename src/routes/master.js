@@ -1,57 +1,112 @@
+// var mongoose = require('mongoose'),
+//     mongoosastic = require('mongoosastic')
+//
+// const schedule = require('../models/scheduleModel').schedule
+// const user = require('../models/userModel').user
+//
+// const getSchedule = (req, res) => {
+//     schedule.find({}).exec((err, r) => {
+//         if (err) {
+//             res.send('error has occured')
+//         } else {
+//             res.send(r)
+//         }
+//     })
+// }
+//
+// const getAvailable = (req, res) => {
+//   schedule.search({query_string: {
+//       query: {
+//           nested: {
+//               path:"week",
+//               query:{
+//                   bool:{
+//                       must:[
+//                           {match:'week.day'}
+//                       ]
+//                   }
+//               }
+//           }}
+//
+//
+//   }}, {hydrate: true}, function (err, r) {
+//     if (err) {
+//         res.send('error has occured')
+//     } else {
+//         res.send(r)
+//     }
+//   })
+// }
+//
+// const getNetId = (req, res) => {
+//   user.search({query_string: {query: "cer8"}}, {hydrate: true}, function (err, r) {
+//     if (err) {
+//       res.send('error has occured')
+//     }
+//     else {
+//       res.send(r)
+//     }
+//   })
+// }
+// //
+// // const getMon = (req, res) => {
+// //     schedule.search({
+// //        query_string:{
+// //            query:{
+// //                match:{
+// //                    week:
+// //                }
+// //            }
+// //        }
+// //     }, function(err, results) {
+// //         console.log(results)
+// //         res.send(results)
+// //     });
+// // }
+//
+// module.exports = app => {
+//     app.get('/master/schedule', getSchedule)
+//     app.get('/master/available', getAvailable)
+//     app.get('/master/netid', getNetId)
+// }
 var mongoose = require('mongoose'),
     mongoosastic = require('mongoosastic')
 
 const schedule = require('../models/scheduleModel').schedule
-const user = require('../models/userModel').user
 
 const getSchedule = (req, res) => {
     schedule.find({}).exec((err, r) => {
         if (err) {
             res.send('error has occured')
         } else {
-            res.send(r)
+            res.send(r[0])
+        }
+    })
+}
+//
+const getDay = (req, res) => {
+    schedule.find({},{_id:0,week:{$elemMatch:{day:req.params.day}}}).exec((err, r) => {
+        if (err) {
+            res.send('error has occured')
+        } else {
+            res.send(r[0])
         }
     })
 }
 
-const getAvailable = (req, res) => {
-  schedule.search({query_string: {query: "Monday"}}, {hydrate: true}, function (err, r) {
-    if (err) {
-        res.send('error has occured')
-    } else {
-        res.send(r)
-    }
-  })
-}
-
-const getNetId = (req, res) => {
-  user.search({query_string: {query: "jhw5"}}, {hydrate: true}, function (err, r) {
-    if (err) {
-      res.send('error has occured')
-    }
-    else {
-      res.send(r)
-    }
-  })
-}
 //
-// const getMon = (req, res) => {
-//     schedule.search({
-//        query_string:{
-//            query:{
-//                match:{
-//                    week:
-//                }
-//            }
-//        }
-//     }, function(err, results) {
-//         console.log(results)
-//         res.send(results)
-//     });
+// const getAvailable = (req, res) => {
+//     schedule.search({query_string:{query:"Monday"}}).exec((err, r) => {
+//         if (err) {
+//             res.send('error has occured')
+//         } else {
+//             res.send(r)
+//         }
+//     })
 // }
 
 module.exports = app => {
     app.get('/master/schedule', getSchedule)
-    app.get('/master/available', getAvailable)
-    app.get('/master/netid', getNetId)
+    app.get('/master/:day?', getDay)
+    //app.get('/master/available', getAvailable)
 }

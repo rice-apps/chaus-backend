@@ -10,7 +10,7 @@ var UserSchema = new Schema({
     maxHour: Number
 })
 
-UserSchema.plugin(mongoosastic)
+UserSchema.plugin(mongoosastic,{hosts:['localhost:9200']})
 
 var User = mongoose.model("User", UserSchema), stream = User.synchronize(),count = 0;
 
