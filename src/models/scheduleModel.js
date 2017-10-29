@@ -17,7 +17,7 @@ var ScheduleSchema = new Schema({
         {
             day: String,
             shifts: {
-              type: [DayShift],
+              type: [DayShiftSchema],
               es_indexed: true,
               es_type: 'nested',
               es_include_in_parent: true

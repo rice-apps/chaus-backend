@@ -1,7 +1,7 @@
 /**
  * Created by Jeffr on 7/22/2017.
  */
-const User = require('../models/userModel').User
+const User = require('../models/userModel').user
 var mongoose = require('mongoose')
 mongoose.Promise = require('bluebird');
 

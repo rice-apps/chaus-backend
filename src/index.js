@@ -29,7 +29,3 @@ const server = app.listen(port, () => {
     const addr = server.address()
     console.log(`Server listening at http://${addr.address}:${addr.port}`)
 })
-
-
-
-
