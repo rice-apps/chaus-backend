@@ -2,14 +2,8 @@ var mongoose     = require('mongoose')
     , mongoosastic = require('mongoosastic')
     , Schema       = mongoose.Schema
 require('../db')
-var User = new Schema({
-    netid:String,
-    name: String,
-    minHour: Number,
-    maxHour: Number
-})
 
-var dayShift =
+var DayShiftSchema =
     new Schema(
         {
             hour: Number,
@@ -18,11 +12,16 @@ var dayShift =
         }
     )
 
-var schedule = new Schema({
-    week : [
+var ScheduleSchema = new Schema({
+    week: [
         {
             day: String,
-            shifts: [dayShift]
+            shifts: {
+              type: [DayShiftSchema],
+              es_indexed: true,
+              es_type: 'nested',
+              es_include_in_parent: true
+            }
         }
     ]
 })
@@ -44,8 +43,10 @@ var schedule = new Schema({
 //     Sat:Sats,
 //     Sun:Suns
 // })
-schedule.plugin(mongoosastic)
-var Schedule = mongoose.model("schedule", schedule),stream = Schedule.synchronize(),count = 0;
+
+ScheduleSchema.plugin(mongoosastic)
+
+var Schedule = mongoose.model("Schedule", ScheduleSchema), stream = Schedule.synchronize(),count = 0;
 
 stream.on('data', function(err, doc){
     count++;
@@ -58,4 +59,3 @@ stream.on('error', function(err){
 });
 
 exports.schedule = Schedule
-
