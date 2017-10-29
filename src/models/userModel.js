@@ -1,24 +1,27 @@
-/**
- * Created by Jeffr on 7/22/2017.
- */
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
+var mongoose     = require('mongoose')
+    , mongoosastic = require('mongoosastic')
+    , Schema       = mongoose.Schema
 require('../db')
 
-var weekSchema = new Schema ({
-    mon: [Number],
-    tues: [Number],
-    wed: [Number],
-    thurs: [Number],
-    fri: [Number],
-    sat: [Number],
-    sun: [Number]
-})
-var userSchema = new Schema ({
-    first: String,
-    netid: String,
-    cap: Number,
-    week: weekSchema
+var UserSchema = new Schema({
+    netid:{type: String, es_indexed: true},
+    name: {type: String, es_indexed: true},
+    minHour: Number,
+    maxHour: Number
 })
 
-exports.User = mongoose.model('user', userSchema)
+UserSchema.plugin(mongoosastic)
+
+var User = mongoose.model("User", UserSchema), stream = User.synchronize(),count = 0;
+
+stream.on('data', function(err, doc){
+    count++;
+});
+stream.on('close', function(){
+    console.log('indexed ' + count + ' documents!');
+});
+stream.on('error', function(err){
+    console.log(err);
+});
+
+exports.user = User
