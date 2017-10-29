@@ -94,19 +94,37 @@ const getDay = (req, res) => {
     })
 }
 
+// const getAvailable = (req,res) => {
+//     schedule.find({}).exec((err, r) => {
+//         if (err) {
+//             res.send('error has occured')
+//         } else {
+//             res.send(r[0].week.map(
+//                 day=> {
+//
+//                     filteredShifts = day.shifts.filter(shift=>shift.availability.indexOf(req.params.netid)!=-1);
+//                     return {
+//                         day:day.day,
+//                         shifts:filteredShifts
+//                 }}))
+//         }
+//     })
+// }
+
 const getAvailable = (req,res) => {
     schedule.find({}).exec((err, r) => {
         if (err) {
             res.send('error has occured')
         } else {
-            res.send(r[0].week.map(
+            res.send(
+                r[0].week.map(
                 day=> {
-
                     filteredShifts = day.shifts.filter(shift=>shift.availability.indexOf(req.params.netid)!=-1);
-                    return {
-                        day:day.day,
-                        shifts:filteredShifts
-                }}))
+                    filteredHours = filteredShifts.map(shift=>shift.hour)
+                    var res = {};
+                    res[day.day]=filteredHours
+                    return res;
+                }))
         }
     })
 }
