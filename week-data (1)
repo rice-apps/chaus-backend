@@ -1,98 +1,4 @@
-db.users.insert({
-	first: "Jeffrey",
-	netid: "jhw5",
-	cap: 5,
-	week: {
-		mon: [1],
-    	tues: [6],
-    	wed: [2,8],
-    	thurs: [],
-    	fri: [4],
-    	sat: [],
-    	sun: [1]
-	}
-
-})
-
-db.users.insert({
-	first: "Jonathan",
-	netid: "jym2",
-	cap: 5,
-	week: {
-		mon: [3,4],
-    	tues: [6],
-    	wed: [1,2],
-    	thurs: [],
-    	fri: [],
-    	sat: [],
-    	sun: []
-	}
-
-})
-
-db.users.insert({
-	first: "Samantha",
-	netid: "smt6",
-	cap: 5,
-	week: {
-		mon: [],
-    	tues: [],
-    	wed: [],
-    	thurs: [],
-    	fri: [],
-    	sat: [],
-    	sun: []
-	}
-
-})
-
-
-db.users.insert({
-	first: "Cade",
-	netid: "cer8",
-	cap: 5,
-	week: {
-		mon: [],
-    	tues: [],
-    	wed: [],
-    	thurs: [],
-    	fri: [],
-    	sat: [],
-    	sun: []
-	}
-
-})
-
-db.mons.insert({
-  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
-})
-
-db.tues.insert({
-  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
-})
-
-db.weds.insert({
-  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
-})
-
-db.thurs.insert({
-  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
-})
-
-db.fris.insert({
-  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
-})
-
-db.sats.insert({
-  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
-})
-
-db.suns.insert({
-  1:[],2:[],3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[]
-})
-
-<<<<<<< HEAD
-db.TestData.insert({
+db.TestData.insert(
 {
 	"week": [{
 			"day": "M",
@@ -1026,62 +932,142 @@ db.TestData.insert({
 			"day": "F",
 			"shifts": [{
 					"hour": 7,
-					"availability": [“da30”, “jmd16”],
-					"schedule": [“da30”, “jmd16”],
+					"availability": [
+						"da30",
+						"jmd16"
+					],
+					"schedule": [
+						"da30",
+						"jmd16"
+					],
 					"status": true
 				},
 				{
 					"hour": 8,
-					"availability": [“jhw5”, “jlt10”, “abc1”],
-					"schedule": [“jhw5”, “abc1”],
+					"availability": [
+						"jhw5",
+						"jlt10",
+						"abc1"
+					],
+					"schedule": [
+						"jhw5",
+						"abc1"
+					],
 					"status": true
 				},
 				{
 					"hour": 9,
-					"availability": [“abc4”, “abc1”, “jmd16”],
-					"schedule": [“jmd16”, “abc4”],
+					"availability": [
+						"abc4",
+						"abc1",
+						"jmd16"
+					],
+					"schedule": [
+						"jmd16",
+						"abc4"
+					],
 					"status": true
 				},
 				{
 					"hour": 10,
-					"availability": [“wsm3”, “jhw5”, “jmd16”, “jlt10”],
-					"schedule": [“wsm3”, “jmd16”],
+					"availability": [
+						"wsm3",
+						"jhw5",
+						"jmd16",
+						"jlt10"
+					],
+					"schedule": [
+						"wsm3",
+						"jmd16"
+					],
 					"status": true
 				},
 				{
 					"hour": 11,
-					"availability": [“wsm3”, “jhw5”, “abc1”, “abc2”],
-					"schedule": [“wsm3”, “abc2”, “abc1”],
+					"availability": [
+						"wsm3",
+						"jhw5",
+						"abc1",
+						"abc2"
+					],
+					"schedule": [
+						"wsm3",
+						"abc2",
+						"abc1"
+					],
 					"status": true
 				},
 				{
 					"hour": 12,
-					"availability": [“wsm3”, “jhw5”, “cer8”, “ob10”],
-					"schedule": [“jhw5”, “ob10”, “cer8”],
+					"availability": [
+						"wsm3",
+						"jhw5",
+						"cer8",
+						"ob10"
+					],
+					"schedule": [
+						"jhw5",
+						"ob10",
+						"cer8"
+					],
 					"status": true
 				},
 				{
 					"hour": 13,
-					"availability": [“jmd16”, “ob10”, “jlt10”],
-					"schedule": [“jmd16”, “ob10”, “jlt10”],
+					"availability": [
+						"jmd16",
+						"ob10",
+						"jlt10"
+					],
+					"schedule": [
+						"jmd16",
+						"ob10",
+						"jlt10"
+					],
 					"status": true
 				},
 				{
 					"hour": 14,
-					"availability": [“da30”, “jmd16”, “jlt10”, “abc4”, “abc2”],
-					"schedule": [“da30”, “jmd16”, “jlt10”],
+					"availability": [
+						"da30",
+						"jmd16",
+						"jlt10",
+						"abc4",
+						"abc2"
+					],
+					"schedule": [
+						"da30",
+						"jmd16",
+						"jlt10"
+					],
 					"status": true
 				},
 				{
 					"hour": 15,
-					"availability": [“da30”, “jmd16”, “jhw5”, “abc1”],
-					"schedule": [“da30”, “jmd16”, “jhw5”],
+					"availability": [
+						"da30",
+						"jmd16",
+						"jhw5",
+						"abc1"
+					],
+					"schedule": [
+						"da30",
+						"jmd16",
+						"jhw5"
+					],
 					"status": true
 				},
 				{
 					"hour": 16,
-					"availability": [“cer8”, “jlt10”, “abc3”],
-					"schedule": [“cer8”, “jlt10”],
+					"availability": [
+						"cer8",
+						"jlt10",
+						"abc3"
+					],
+					"schedule": [
+						"cer8",
+						"jlt10"
+					],
 					"status": true
 				},
 				{
@@ -1156,44 +1142,101 @@ db.TestData.insert({
 				},
 				{
 					"hour": 10,
-					"availability": [“cer8”, “ob10”, “jhw5”],
-					"schedule": [“cer8”, “ob10”],
+					"availability": [
+						"cer8",
+						"ob10",
+						"jhw5"
+					],
+					"schedule": [
+						"cer8",
+						"ob10"
+					],
 					"status": true
 				},
 				{
 					"hour": 11,
-					"availability": [“cer8”, “jhw5”, “ob10”, “jlt10”],
-					"schedule": [“jlt10”, “cer8”],
+					"availability": [
+						"cer8",
+						"jhw5",
+						"ob10",
+						"jlt10"
+					],
+					"schedule": [
+						"jlt10",
+						"cer8"
+					],
 					"status": true
 				},
 				{
 					"hour": 12,
-					"availability": [“abc1”, “abc2”, “abc3”],
-					"schedule": [“abc1”, “abc2”],
+					"availability": [
+						"abc1",
+						"abc2",
+						"abc3"
+					],
+					"schedule": [
+						"abc1",
+						"abc2"
+					],
 					"status": true
 				},
 				{
 					"hour": 13,
-					"availability": [“ob10”, “abc2”, “cer8”],
-					"schedule": [“cer8”, “ob10”, “abc2”],
+					"availability": [
+						"ob10",
+						"abc2",
+						"cer8"
+					],
+					"schedule": [
+						"cer8",
+						"ob10",
+						"abc2"
+					],
 					"status": true
 				},
 				{
 					"hour": 14,
-					"availability": [“da30”, “abc3”, “abc4”, “jhw5”],
-					"schedule": [“da30”, “abc3”, “abc4”, “jhw5”],
+					"availability": [
+						"da30",
+						"abc3",
+						"abc4",
+						"jhw5"
+					],
+					"schedule": [
+						"da30",
+						"abc3",
+						"abc4",
+						"jhw5"
+					],
 					"status": true
 				},
 				{
 					"hour": 15,
-					"availability": [“jhw5”, “jlt10”, “cer8”, “abc2”],
-					"schedule": [“jhw5”, “jlt10”, “abc2”],
+					"availability": [
+						"jhw5",
+						"jlt10",
+						"cer8",
+						"abc2"
+					],
+					"schedule": [
+						"jhw5",
+						"jlt10",
+						"abc2"
+					],
 					"status": true
 				},
 				{
 					"hour": 16,
-					"availability": [“cer8”, “ob10”, “jhw5”, “jlt10”],
-					"schedule": [“cer8”, “jlt10”],
+					"availability": [
+						"cer8",
+						"ob10",
+						"jhw5",
+						"jlt10"
+					],
+					"schedule": [
+						"cer8",
+						"jlt10"
+					],
 					"status": true
 				},
 				{
@@ -1292,75 +1335,163 @@ db.TestData.insert({
 				},
 				{
 					"hour": 14,
-					"availability": [“jmd16”, “abc1”, “abc2”],
-					"schedule": [“jmd16”, “abc1”],
+					"availability": [
+						"jmd16",
+						"abc1",
+						"abc2"
+					],
+					"schedule": [
+						"jmd16",
+						"abc1"
+					],
 					"status": true
 				},
 				{
 					"hour": 15,
-					"availability": [“cer8”, “jmd16”, “abc2”],
-					"schedule": [“cer8”, “jmd16”, “abc2”],
+					"availability": [
+						"cer8",
+						"jmd16",
+						"abc2"
+					],
+					"schedule": [
+						"cer8",
+						"jmd16",
+						"abc2"
+					],
 					"status": true
 				},
 				{
 					"hour": 16,
-					"availability": [“jhw5”, “ob10”, “wsm3”],
-					"schedule": [“wsm3”, “jhw5”],
+					"availability": [
+						"jhw5",
+						"ob10",
+						"wsm3"
+					],
+					"schedule": [
+						"wsm3",
+						"jhw5"
+					],
 					"status": true
 				},
 				{
 					"hour": 17,
-					"availability": [“wsm3”, “cer8”, “jmd16”, “jlt10”],
-					"schedule": [“wsm3”, “cer8”, “jlt10”],
+					"availability": [
+						"wsm3",
+						"cer8",
+						"jmd16",
+						"jlt10"
+					],
+					"schedule": [
+						"wsm3",
+						"cer8",
+						"jlt10"
+					],
 					"status": true
 				},
 				{
 					"hour": 18,
-					"availability": [“wsm3”, “cer8”, “jmd16”, “jlt10”, “abc2”],
-					"schedule": [“wsm3”, “jmd16”, “abc2”],
+					"availability": [
+						"wsm3",
+						"cer8",
+						"jmd16",
+						"jlt10",
+						"abc2"
+					],
+					"schedule": [
+						"wsm3",
+						"jmd16",
+						"abc2"
+					],
 					"status": true
 				},
 				{
 					"hour": 19,
-					"availability": [“jhw5”, “cer8”, “ob10”, “jlt10”],
-					"schedule": [“cer8”, “jhw5”, “ob10”],
+					"availability": [
+						"jhw5",
+						"cer8",
+						"ob10",
+						"jlt10"
+					],
+					"schedule": [
+						"cer8",
+						"jhw5",
+						"ob10"
+					],
 					"status": true
 				},
 				{
 					"hour": 20,
-					"availability": [“jlt10”, “jhw5”, “cer8”, “abc3”, “abc4”],
-					"schedule": [“jlt10”, “abc3”, “abc4”, “cer8”],
+					"availability": [
+						"jlt10",
+						"jhw5",
+						"cer8",
+						"abc3",
+						"abc4"
+					],
+					"schedule": [
+						"jlt10",
+						"abc3",
+						"abc4",
+						"cer8"
+					],
 					"status": true
 				},
 				{
 					"hour": 21,
-					"availability": [“abc1”, “abc2”, “ob10”, “wsm3”],
-					"schedule": [“abc2”, “wsm3”, “ob10”],
+					"availability": [
+						"abc1",
+						"abc2",
+						"ob10",
+						"wsm3"
+					],
+					"schedule": [
+						"abc2",
+						"wsm3",
+						"ob10"
+					],
 					"status": true
 				},
 				{
 					"hour": 22,
-					"availability": [“wsm3”, “da30”, “cer8”],
-					"schedule": [“wsm3”, “da30”],
+					"availability": [
+						"wsm3",
+						"da30",
+						"cer8"
+					],
+					"schedule": [
+						"wsm3",
+						"da30"
+					],
 					"status": true
 				},
 				{
 					"hour": 23,
-					"availability": [“da30”, “wsm3”, “jhw5”, “ob10”],
-					"schedule": [“ob10”, “da30”],
+					"availability": [
+						"da30",
+						"wsm3",
+						"jhw5",
+						"ob10"
+					],
+					"schedule": [
+						"ob10",
+						"da30"
+					],
 					"status": true
 				},
 				{
 					"hour": 24,
-					"availability": [“abc2”, “abc3”, “da30”],
-					"schedule": [“abc2”, “abc3”],
+					"availability": [
+						"abc2",
+						"abc3",
+						"da30"
+					],
+					"schedule": [
+						"abc2",
+						"abc3"
+					],
 					"status": true
 				}
 			]
 		}
 	]
-}
 })
-=======
-
->>>>>>> c483a9e2fba6829b40ea1decbd85444de67b3cef
