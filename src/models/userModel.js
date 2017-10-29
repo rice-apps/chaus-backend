@@ -10,18 +10,9 @@ var UserSchema = new Schema({
     maxHour: Number
 })
 
-UserSchema.plugin(mongoosastic,{hosts:['localhost:9200']})
 
-var User = mongoose.model("User", UserSchema), stream = User.synchronize(),count = 0;
+var User = mongoose.model("User", UserSchema)
 
-stream.on('data', function(err, doc){
-    count++;
-});
-stream.on('close', function(){
-    console.log('indexed ' + count + ' documents!');
-});
-stream.on('error', function(err){
-    console.log(err);
-});
+
 
 exports.user = User
