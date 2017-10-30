@@ -7,7 +7,7 @@
 // const getSchedule = (req, res) => {
 //     schedule.find({}).exec((err, r) => {
 //         if (err) {
-//             res.send('error has occured')
+//             res.send('error has occurred')
 //         } else {
 //             res.send(r)
 //         }
@@ -31,7 +31,7 @@
 //
 //   }}, {hydrate: true}, function (err, r) {
 //     if (err) {
-//         res.send('error has occured')
+//         res.send('error has occurred')
 //     } else {
 //         res.send(r)
 //     }
@@ -41,7 +41,7 @@
 // const getNetId = (req, res) => {
 //   user.search({query_string: {query: "cer8"}}, {hydrate: true}, function (err, r) {
 //     if (err) {
-//       res.send('error has occured')
+//       res.send('error has occurred')
 //     }
 //     else {
 //       res.send(r)
@@ -77,7 +77,7 @@ const schedule = require('../models/scheduleModel').schedule
 const getSchedule = (req, res) => {
     schedule.find({}).exec((err, r) => {
         if (err) {
-            res.send('error has occured')
+            res.send('error has occurred')
         } else {
             res.send(r[0])
         }
@@ -87,7 +87,7 @@ const getSchedule = (req, res) => {
 const getDay = (req, res) => {
     schedule.find({},{_id:0,week:{$elemMatch:{day:req.params.day}}}).exec((err, r) => {
         if (err) {
-            res.send('error has occured')
+            res.send('error has occurred')
         } else {
             res.send(r[0])
         }
@@ -97,7 +97,7 @@ const getDay = (req, res) => {
 // const getAvailable = (req,res) => {
 //     schedule.find({}).exec((err, r) => {
 //         if (err) {
-//             res.send('error has occured')
+//             res.send('error has occurred')
 //         } else {
 //             res.send(r[0].week.map(
 //                 day=> {
@@ -114,7 +114,7 @@ const getDay = (req, res) => {
 const getAvailable = (req,res) => {
     schedule.find({}).exec((err, r) => {
         if (err) {
-            res.send('error has occured')
+            res.send('error has occurred')
         } else {
             res.send(
                 r[0].week.map(
@@ -132,7 +132,7 @@ const getAvailable = (req,res) => {
 const getScheduled = (req,res) => {
     schedule.find({}).exec((err, r) => {
         if (err) {
-            res.send('error has occured')
+            res.send('error has occurred')
         } else {
             res.send(r[0].week.map(
                 day=> {
@@ -150,7 +150,7 @@ const getScheduled = (req,res) => {
 // const getAvailable = (req, res) => {
 //     schedule.search({query_string:{query:"Monday"}}).exec((err, r) => {
 //         if (err) {
-//             res.send('error has occured')
+//             res.send('error has occurred')
 //         } else {
 //             res.send(r)
 //         }
