@@ -2,7 +2,6 @@
 var mongoose = require('mongoose'),
     mongoosastic = require('mongoosastic')
 
->>>>>>> bba784fd263abb6f3e00389676140b9c0aae94a1
 const schedule = require('../models/scheduleModel').schedule
 
 const getSchedule = (req, res) => {
