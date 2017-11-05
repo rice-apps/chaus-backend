@@ -1,5 +1,4 @@
 var mongoose     = require('mongoose')
-    , mongoosastic = require('mongoosastic')
     , Schema       = mongoose.Schema
 require('../db')
 
@@ -23,6 +22,6 @@ var ScheduleSchema = new Schema({
     week: [weekSchema]});
 
 
-var Schedule = mongoose.model("testdata", ScheduleSchema)
+var Schedule = mongoose.model("schedule", ScheduleSchema)
 
 exports.schedule = Schedule

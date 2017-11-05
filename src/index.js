@@ -19,7 +19,6 @@ app.use(cookieParser());
 app.use(enableCORS);
 
 require('./routes/users')(app)
-require('./routes/week')(app)
 require('./routes/master')(app)
 
 // Get the port from the environment, i.e., Heroku sets it

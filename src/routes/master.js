@@ -1,77 +1,3 @@
-// var mongoose = require('mongoose'),
-//     mongoosastic = require('mongoosastic')
-//
-// const schedule = require('../models/scheduleModel').schedule
-// const user = require('../models/userModel').user
-//
-// const getSchedule = (req, res) => {
-//     schedule.find({}).exec((err, r) => {
-//         if (err) {
-//             res.send('error has occured')
-//         } else {
-//             res.send(r)
-//         }
-//     })
-// }
-//
-// const getAvailable = (req, res) => {
-//   schedule.search({query_string: {
-//       query: {
-//           nested: {
-//               path:"week",
-//               query:{
-//                   bool:{
-//                       must:[
-//                           {match:'week.day'}
-//                       ]
-//                   }
-//               }
-//           }}
-//
-//
-//   }}, {hydrate: true}, function (err, r) {
-//     if (err) {
-//         res.send('error has occured')
-//     } else {
-//         res.send(r)
-//     }
-//   })
-// }
-//
-// const getNetId = (req, res) => {
-//   user.search({query_string: {query: "cer8"}}, {hydrate: true}, function (err, r) {
-//     if (err) {
-//       res.send('error has occured')
-//     }
-//     else {
-//       res.send(r)
-//     }
-//   })
-// }
-// //
-// // const getMon = (req, res) => {
-// //     schedule.search({
-// //        query_string:{
-// //            query:{
-// //                match:{
-// //                    week:
-// //                }
-// //            }
-// //        }
-// //     }, function(err, results) {
-// //         console.log(results)
-// //         res.send(results)
-// //     });
-// // }
-//
-// module.exports = app => {
-//     app.get('/master/schedule', getSchedule)
-//     app.get('/master/available', getAvailable)
-//     app.get('/master/netid', getNetId)
-// }
-var mongoose = require('mongoose'),
-    mongoosastic = require('mongoosastic')
-
 const schedule = require('../models/scheduleModel').schedule
 
 const getSchedule = (req, res) => {
@@ -93,23 +19,6 @@ const getDay = (req, res) => {
         }
     })
 }
-
-// const getAvailable = (req,res) => {
-//     schedule.find({}).exec((err, r) => {
-//         if (err) {
-//             res.send('error has occured')
-//         } else {
-//             res.send(r[0].week.map(
-//                 day=> {
-//
-//                     filteredShifts = day.shifts.filter(shift=>shift.availability.indexOf(req.params.netid)!=-1);
-//                     return {
-//                         day:day.day,
-//                         shifts:filteredShifts
-//                 }}))
-//         }
-//     })
-// }
 
 const getAvailable = (req,res) => {
     schedule.find({}).exec((err, r) => {
@@ -146,20 +55,51 @@ const getScheduled = (req,res) => {
     })
 }
 
-//
-// const getAvailable = (req, res) => {
-//     schedule.search({query_string:{query:"Monday"}}).exec((err, r) => {
-//         if (err) {
-//             res.send('error has occured')
-//         } else {
-//             res.send(r)
-//         }
-//     })
-// }
+const putAvailability = (req,res) => {
+    const netId = req.params.netid;
+    var mon = req.body.Monday.filter(time => time.changed)
+    console.log(mon)
+    schedule.find({}).exec((err,schedules)=> {
+        schedules[0].week.map(
+            day => {
+                if (day.day == "M") {
+                    mon.forEach( (changedshift) => {
+                        var shift = day.shifts[changedshift.hour - 7]
+                        var availableOriginal = shift.availability
+                        console.log(shift)
+                        console.log(availableOriginal.indexOf(netId))
+                        console.log(changedshift)
+                        if (changedshift.available == true && availableOriginal.indexOf(netId) == -1) {
+                            console.log('shift changed')
+                            availableOriginal.push(netId)
+                        } else if (changedshift.available == false){
+                             const index = availableOriginal.indexOf(netId)
+                             if (index != -1) {
+                                 availableOriginal.splice(index, 1)
+                             }
+                        }
+                        day.shifts[changedshift.hour - 7].availability = availableOriginal
+                    })
+
+                }
+            })
+        //console.log(JSON.stringify(schedules[0].week))
+        schedules[0].save((err) => {
+            console.log('saved!')
+             if (err) {
+                 console.log(err)
+             }
+         })
+    })
+
+
+    res.send("success!")
+}
 
 module.exports = app => {
     app.get('/master/schedule', getSchedule)
     app.get('/master/:day?', getDay)
     app.get('/master/available/:netid?', getAvailable)
     app.get('/master/schedule/:netid?', getScheduled)
+    app.put('/master/update/:netid?',putAvailability)
 }
