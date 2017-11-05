@@ -1,9 +1,14 @@
+
+var mongoose = require('mongoose'),
+    mongoosastic = require('mongoosastic')
+
+>>>>>>> bba784fd263abb6f3e00389676140b9c0aae94a1
 const schedule = require('../models/scheduleModel').schedule
 
 const getSchedule = (req, res) => {
     schedule.find({}).exec((err, r) => {
         if (err) {
-            res.send('error has occured')
+            res.send('error has occurred')
         } else {
             res.send(r[0])
         }
@@ -13,7 +18,7 @@ const getSchedule = (req, res) => {
 const getDay = (req, res) => {
     schedule.find({},{_id:0,week:{$elemMatch:{day:req.params.day}}}).exec((err, r) => {
         if (err) {
-            res.send('error has occured')
+            res.send('error has occurred')
         } else {
             res.send(r[0])
         }
@@ -23,7 +28,7 @@ const getDay = (req, res) => {
 const getAvailable = (req,res) => {
     schedule.find({}).exec((err, r) => {
         if (err) {
-            res.send('error has occured')
+            res.send('error has occurred')
         } else {
             res.send(
                 r[0].week.map(
@@ -41,7 +46,7 @@ const getAvailable = (req,res) => {
 const getScheduled = (req,res) => {
     schedule.find({}).exec((err, r) => {
         if (err) {
-            res.send('error has occured')
+            res.send('error has occurred')
         } else {
             res.send(r[0].week.map(
                 day=> {
@@ -95,6 +100,7 @@ const putAvailability = (req,res) => {
 
     res.send("success!")
 }
+
 
 module.exports = app => {
     app.get('/master/schedule', getSchedule)
