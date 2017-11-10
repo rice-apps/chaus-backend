@@ -13,7 +13,7 @@ const getSchedule = (req, res) => {
         }
     })
 }
-//
+
 const getDay = (req, res) => {
     schedule.find({},{_id:0,week:{$elemMatch:{day:req.params.day}}}).exec((err, r) => {
         if (err) {
@@ -32,10 +32,21 @@ const getAvailable = (req,res) => {
             res.send(
                 r[0].week.map(
                 day=> {
-                    filteredShifts = day.shifts.filter(shift=>shift.availability.indexOf(req.params.netid)!=-1);
-                    filteredHours = filteredShifts.map(shift=>shift.hour)
+                    filteredShifts = day.shifts.map(
+                        shift=> {
+                            var newShift = {};
+                            if (shift.availability.indexOf(req.params.netid)!=-1) {
+                                newShift['available']=true
+                            } else {
+                                newShift['available']=false
+                            }
+                            newShift['hour']=shift.hour
+                            newShift['changed']=false
+                            newShift['status'] = true
+                            return newShift
+                        })
                     var res = {};
-                    res[day.day]=filteredHours
+                    res[day.day]=filteredShifts
                     return res;
                 }))
         }
@@ -47,14 +58,26 @@ const getScheduled = (req,res) => {
         if (err) {
             res.send('error has occurred')
         } else {
-            res.send(r[0].week.map(
-                day=> {
-
-                    filteredShifts = day.shifts.filter(shift=>shift.schedule.indexOf(req.params.netid)!=-1);
-                    return {
-                        day:day.day,
-                        shifts:filteredShifts
-                    }}))
+            res.send(
+                r[0].week.map(
+                    day=> {
+                        filteredShifts = day.shifts.map(
+                            shift=> {
+                                var newShift = {};
+                                if (shift.schedule.indexOf(req.params.netid)!=-1) {
+                                    newShift['schedule']=true
+                                } else {
+                                    newShift['schedule']=false
+                                }
+                                newShift['hour']=shift.hour
+                                newShift['changed']=false
+                                newShift['status'] = true
+                                return newShift
+                            })
+                        var res = {};
+                        res[day.day]=filteredShifts
+                        return res;
+                    }))
         }
     })
 }
@@ -322,7 +345,6 @@ const putSchedule = (req,res) => {
                 }
 
             })
-        //console.log(JSON.stringify(schedules[0].week))
         schedules[0].save((err) => {
             console.log('saved!')
             if (err) {
