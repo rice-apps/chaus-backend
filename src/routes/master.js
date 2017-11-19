@@ -1,7 +1,3 @@
-
-var mongoose = require('mongoose'),
-    mongoosastic = require('mongoosastic')
-
 const schedule = require('../models/scheduleModel').schedule
 
 const getSchedule = (req, res) => {
@@ -23,6 +19,19 @@ const getDay = (req, res) => {
         }
     })
 }
+
+const getShift = (req, res) => {
+    schedule.find({}).exec((err, r) => {
+        if (err) {
+            res.send('error has occurred')
+        } else {
+            res.send(
+                r[0].week.filter(day => day.day == req.params.weekday)[0].shifts.filter(shift => shift.hour == req.params.hour)
+            )
+        }
+    })
+}
+
 
 const getAvailable = (req,res) => {
     schedule.find({}).exec((err, r) => {
@@ -84,13 +93,13 @@ const getScheduled = (req,res) => {
 
 const putAvailability = (req,res) => {
     const netId = req.params.netid;
-    var mon = req.body.Monday.filter(time => time.changed)
-    var tue = req.body.Tuesday.filter(time => time.changed)
-    var wed = req.body.Wednesday.filter(time => time.changed)
-    var thu = req.body.Thursday.filter(time=>time.changed)
-    var fri = req.body.Friday.filter(time=>time.changed)
-    var sat = req.body.Saturday.filter(time=>time.changed)
-    var sun = req.body.Sunday.filter(time=>time.changed)
+    var mon = req.body.M.filter(time => time.changed)
+    var tue = req.body.T.filter(time => time.changed)
+    var wed = req.body.W.filter(time => time.changed)
+    var thu = req.body.R.filter(time=>time.changed)
+    var fri = req.body.F.filter(time=>time.changed)
+    var sat = req.body.S.filter(time=>time.changed)
+    var sun = req.body.U.filter(time=>time.changed)
     schedule.find({}).exec((err,schedules)=> {
         schedules[0].week.map(
             day => {
@@ -361,6 +370,7 @@ module.exports = app => {
     app.get('/master/:day?', getDay)
     app.get('/master/available/:netid?', getAvailable)
     app.get('/master/schedule/:netid?', getScheduled)
+    app.get('/master/shift/:weekday?/:hour?',getShift)
     app.put('/master/update/availability/:netid?',putAvailability)
     app.put('/master/update/schedule/:netid?',putSchedule)
 }

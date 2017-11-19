@@ -5,11 +5,11 @@
   "license": "MIT",
   "main": "index.js",
   "dependencies": {
-    "body-parser": "^1.15.2",
+    "body-parser": "^1.18.2",
     "cloudinary": "^1.4.6",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.1",
-    "express": "^4.13.3",
+    "express": "^4.16.2",
     "express-session": "^1.14.2",
     "md5": "^2.2.1",
     "mongoosastic": "^4.3.0",
