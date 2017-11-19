@@ -32,7 +32,6 @@ const getShift = (req, res) => {
     })
 }
 
-
 const getAvailable = (req, res) => {
     schedule.find({}).exec((err, r) => {
         if (err) {
@@ -107,46 +106,13 @@ function updateShift(shifts, changedshift, netId) {
 
 const putAvailability = (req, res) => {
     const netId = req.params.netid;
-    var mon = req.body.M.filter(time => time.changed)
-    var tue = req.body.T.filter(time => time.changed)
-    var wed = req.body.W.filter(time => time.changed)
-    var thu = req.body.R.filter(time => time.changed)
-    var fri = req.body.F.filter(time => time.changed)
-    var sat = req.body.S.filter(time => time.changed)
-    var sun = req.body.U.filter(time => time.changed)
     schedule.find({}).exec((err, schedules) => {
         schedules[0].week.map(
             day => {
-                switch (day.day) {
-                    case "M":
-                        mon.forEach((changedshift) => {
-                            day.shifts = updateShift(day.shifts, changedshift, netId)
-                        })
-                    case "T":
-                        tue.forEach((changedshift) => {
-                            day.shifts = updateShift(day.shifts, changedshift, netId)
-                        })
-                    case "W":
-                        wed.forEach((changedshift) => {
-                            day.shifts = updateShift(day.shifts, changedshift, netId)
-                        })
-                    case "R":
-                        thu.forEach((changedshift) => {
-                            day.shifts = updateShift(day.shifts, changedshift, netId)
-                        })
-                    case "F":
-                        fri.forEach((changedshift) => {
-                            day.shifts = updateShift(day.shifts, changedshift, netId)
-                        })
-                    case "S":
-                        sat.forEach((changedshift) => {
-                            day.shifts = updateShift(day.shifts, changedshift, netId)
-                        })
-                    case "U":
-                        sun.forEach((changedshift) => {
-                            day.shifts = updateShift(day.shifts, changedshift, netId)
-                        })
-                }
+                weekdayName = day.day
+                req.body[weekdayName].filter(time => time.changed).forEach((changedshift) => {
+                    day.day == weekdayName? day.shifts = updateShift(day.shifts, changedshift, netId) : day.shifts=day.shifts
+                })
             })
         schedules[0].save((err) => {
             console.log('saved!')
@@ -155,7 +121,6 @@ const putAvailability = (req, res) => {
             }
         })
     })
-
     res.send("successfully updated !")
 }
 
