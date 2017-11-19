@@ -11,7 +11,7 @@ const getSchedule = (req, res) => {
 }
 
 const getDay = (req, res) => {
-    schedule.find({},{_id:0,week:{$elemMatch:{day:req.params.day}}}).exec((err, r) => {
+    schedule.find({}, {_id: 0, week: {$elemMatch: {day: req.params.day}}}).exec((err, r) => {
         if (err) {
             res.send('error has occurred')
         } else {
@@ -33,329 +33,146 @@ const getShift = (req, res) => {
 }
 
 
-const getAvailable = (req,res) => {
+const getAvailable = (req, res) => {
     schedule.find({}).exec((err, r) => {
         if (err) {
             res.send('error has occurred')
         } else {
             res.send(
                 r[0].week.map(
-                day=> {
-                    filteredShifts = day.shifts.map(
-                        shift=> {
-                            var newShift = {};
-                            if (shift.availability.indexOf(req.params.netid)!=-1) {
-                                newShift['available']=true
-                            } else {
-                                newShift['available']=false
-                            }
-                            newShift['hour']=shift.hour
-                            newShift['changed']=false
-                            newShift['status'] = true
-                            return newShift
-                        })
-                    var res = {};
-                    res[day.day]=filteredShifts
-                    return res;
-                }))
-        }
-    })
-}
-
-const getScheduled = (req,res) => {
-    schedule.find({}).exec((err, r) => {
-        if (err) {
-            res.send('error has occurred')
-        } else {
-            res.send(
-                r[0].week.map(
-                    day=> {
+                    day => {
                         filteredShifts = day.shifts.map(
-                            shift=> {
+                            shift => {
                                 var newShift = {};
-                                if (shift.schedule.indexOf(req.params.netid)!=-1) {
-                                    newShift['schedule']=true
+                                if (shift.availability.indexOf(req.params.netid) != -1) {
+                                    newShift['available'] = true
                                 } else {
-                                    newShift['schedule']=false
+                                    newShift['available'] = false
                                 }
-                                newShift['hour']=shift.hour
-                                newShift['changed']=false
+                                newShift['hour'] = shift.hour
+                                newShift['changed'] = false
                                 newShift['status'] = true
                                 return newShift
                             })
                         var res = {};
-                        res[day.day]=filteredShifts
+                        res[day.day] = filteredShifts
                         return res;
                     }))
         }
     })
 }
 
-const putAvailability = (req,res) => {
+const getScheduled = (req, res) => {
+    schedule.find({}).exec((err, r) => {
+        if (err) {
+            res.send('error has occurred')
+        } else {
+            res.send(
+                r[0].week.map(
+                    day => {
+                        filteredShifts = day.shifts.map(
+                            shift => {
+                                var newShift = {};
+                                if (shift.schedule.indexOf(req.params.netid) != -1) {
+                                    newShift['schedule'] = true
+                                } else {
+                                    newShift['schedule'] = false
+                                }
+                                newShift['hour'] = shift.hour
+                                newShift['changed'] = false
+                                newShift['status'] = true
+                                return newShift
+                            })
+                        var res = {};
+                        res[day.day] = filteredShifts
+                        return res;
+                    }))
+        }
+    })
+}
+
+function updateShift(shifts, changedshift, netId) {
+    var availableOriginal = shifts[changedshift.hour - 7].availability
+    if (changedshift.available == true && availableOriginal.indexOf(netId) == -1) {
+        availableOriginal.push(netId)
+    } else if (changedshift.available == false) {
+        const index = availableOriginal.indexOf(netId)
+        if (index != -1) {
+            availableOriginal.splice(index, 1)
+        }
+    }
+    shifts[changedshift.hour - 7].availability = availableOriginal
+    return shifts
+}
+
+const putAvailability = (req, res) => {
     const netId = req.params.netid;
     var mon = req.body.M.filter(time => time.changed)
     var tue = req.body.T.filter(time => time.changed)
     var wed = req.body.W.filter(time => time.changed)
-    var thu = req.body.R.filter(time=>time.changed)
-    var fri = req.body.F.filter(time=>time.changed)
-    var sat = req.body.S.filter(time=>time.changed)
-    var sun = req.body.U.filter(time=>time.changed)
-    schedule.find({}).exec((err,schedules)=> {
+    var thu = req.body.R.filter(time => time.changed)
+    var fri = req.body.F.filter(time => time.changed)
+    var sat = req.body.S.filter(time => time.changed)
+    var sun = req.body.U.filter(time => time.changed)
+    schedule.find({}).exec((err, schedules) => {
         schedules[0].week.map(
             day => {
-                if (day.day == "M") {
-                    mon.forEach( (changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var availableOriginal = shift.availability
-                        if (changedshift.available == true && availableOriginal.indexOf(netId) == -1) {
-                            availableOriginal.push(netId)
-                        } else if (changedshift.available == false){
-                             const index = availableOriginal.indexOf(netId)
-                             if (index != -1) {
-                                 availableOriginal.splice(index, 1)
-                             }
-                        }
-                        day.shifts[changedshift.hour - 7].availability = availableOriginal
-                    })
-
-                }
-                if (day.day == "T") {
-                    tue.forEach( (changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var availableOriginal = shift.availability
-                        if (changedshift.available == true && availableOriginal.indexOf(netId) == -1) {
-                            availableOriginal.push(netId)
-                        } else if (changedshift.available == false){
-                            const index = availableOriginal.indexOf(netId)
-                            if (index != -1) {
-                                availableOriginal.splice(index, 1)
-                            }
-                        }
-                        day.shifts[changedshift.hour - 7].availability = availableOriginal
-                    })
-
-                }
-                if (day.day == "W") {
-                    wed.forEach( (changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var availableOriginal = shift.availability
-                        if (changedshift.available == true && availableOriginal.indexOf(netId) == -1) {
-                            availableOriginal.push(netId)
-                        } else if (changedshift.available == false){
-                            const index = availableOriginal.indexOf(netId)
-                            if (index != -1) {
-                                availableOriginal.splice(index, 1)
-                            }
-                        }
-                        day.shifts[changedshift.hour - 7].availability = availableOriginal
-                    })
-
-                }
-                if (day.day == "R") {
-                    thu.forEach( (changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var availableOriginal = shift.availability
-                        if (changedshift.available == true && availableOriginal.indexOf(netId) == -1) {
-                            availableOriginal.push(netId)
-                        } else if (changedshift.available == false){
-                            const index = availableOriginal.indexOf(netId)
-                            if (index != -1) {
-                                availableOriginal.splice(index, 1)
-                            }
-                        }
-                        day.shifts[changedshift.hour - 7].availability = availableOriginal
-                    })
-
-                }
-                if (day.day == "F") {
-                    fri.forEach( (changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var availableOriginal = shift.availability
-                        if (changedshift.available == true && availableOriginal.indexOf(netId) == -1) {
-                            availableOriginal.push(netId)
-                        } else if (changedshift.available == false){
-                            const index = availableOriginal.indexOf(netId)
-                            if (index != -1) {
-                                availableOriginal.splice(index, 1)
-                            }
-                        }
-                        day.shifts[changedshift.hour - 7].availability = availableOriginal
-                    })
-
-                }
-                if (day.day == "S") {
-                    sat.forEach( (changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var availableOriginal = shift.availability
-                        if (changedshift.available == true && availableOriginal.indexOf(netId) == -1) {
-                            availableOriginal.push(netId)
-                        } else if (changedshift.available == false){
-                            const index = availableOriginal.indexOf(netId)
-                            if (index != -1) {
-                                availableOriginal.splice(index, 1)
-                            }
-                        }
-                        day.shifts[changedshift.hour - 7].availability = availableOriginal
-                    })
-
-                }
-                if (day.day == "U") {
-                    sun.forEach( (changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var availableOriginal = shift.availability
-                        if (changedshift.available == true && availableOriginal.indexOf(netId) == -1) {
-                            availableOriginal.push(netId)
-                        } else if (changedshift.available == false){
-                            const index = availableOriginal.indexOf(netId)
-                            if (index != -1) {
-                                availableOriginal.splice(index, 1)
-                            }
-                        }
-                        day.shifts[changedshift.hour - 7].availability = availableOriginal
-                    })
-
+                switch (day.day) {
+                    case "M":
+                        mon.forEach((changedshift) => {
+                            day.shifts = updateShift(day.shifts, changedshift, netId)
+                        })
+                    case "T":
+                        tue.forEach((changedshift) => {
+                            day.shifts = updateShift(day.shifts, changedshift, netId)
+                        })
+                    case "W":
+                        wed.forEach((changedshift) => {
+                            day.shifts = updateShift(day.shifts, changedshift, netId)
+                        })
+                    case "R":
+                        thu.forEach((changedshift) => {
+                            day.shifts = updateShift(day.shifts, changedshift, netId)
+                        })
+                    case "F":
+                        fri.forEach((changedshift) => {
+                            day.shifts = updateShift(day.shifts, changedshift, netId)
+                        })
+                    case "S":
+                        sat.forEach((changedshift) => {
+                            day.shifts = updateShift(day.shifts, changedshift, netId)
+                        })
+                    case "U":
+                        sun.forEach((changedshift) => {
+                            day.shifts = updateShift(day.shifts, changedshift, netId)
+                        })
                 }
             })
-        //console.log(JSON.stringify(schedules[0].week))
         schedules[0].save((err) => {
             console.log('saved!')
-             if (err) {
-                 console.log(err)
-             }
-         })
+            if (err) {
+                console.log(err)
+            }
+        })
     })
 
     res.send("successfully updated !")
 }
 
-const putSchedule = (req,res) => {
-    const netId = req.params.netid;
-    var mon = req.body.Monday.filter(time => time.changed)
-    var tue = req.body.Tuesday.filter(time => time.changed)
-    var wed = req.body.Wednesday.filter(time => time.changed)
-    var thu = req.body.Thursday.filter(time=>time.changed)
-    var fri = req.body.Friday.filter(time=>time.changed)
-    var sat = req.body.Saturday.filter(time=>time.changed)
-    var sun = req.body.Sunday.filter(time=>time.changed)
-    schedule.find({}).exec((err,schedules)=> {
+const putSchedule = (req, res) => {
+    const weekday = req.params.weekday;
+    const hour = req.params.hour;
+    schedule.find({}).exec((err, schedules) => {
         schedules[0].week.map(
             day => {
-                if (day.day == "M") {
-                    mon.forEach( (changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var scheduleOriginal = shift.schedule
-                        if (changedshift.schedule == true && scheduleOriginal.indexOf(netId) == -1) {
-                            scheduleOriginal.push(netId)
-                        } else if (changedshift.available == false){
-                            const index = scheduleOriginal.indexOf(netId)
-                            if (index != -1) {
-                                scheduleOriginal.splice(index, 1)
-                            }
-                        }
-                        day.shifts[changedshift.hour - 7].schedule = scheduleOriginal
-                    })
-
+                if (day.day == weekday) {
+                    var shifttbChanged = day.shifts[hour - 7];
+                    shifttbChanged.availability = req.body.availability;
+                    shifttbChanged.schedule = req.body.schedule;
+                    day[hour - 7] = shifttbChanged
                 }
-                if (day.day == "T") {
-                    tue.forEach( (changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var scheduleOriginal = shift.schedule
-                        if (changedshift.schedule == true && scheduleOriginal.indexOf(netId) == -1) {
-                            scheduleOriginal.push(netId)
-                        } else if (changedshift.available == false){
-                            const index = scheduleOriginal.indexOf(netId)
-                            if (index != -1) {
-                                scheduleOriginal.splice(index, 1)
-                            }
-                        }
-                        day.shifts[changedshift.hour - 7].schedule = scheduleOriginal
-                    })
-
-                }
-                if (day.day == "W") {
-                    wed.forEach((changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var scheduleOriginal = shift.schedule
-                        if (changedshift.schedule == true && scheduleOriginal.indexOf(netId) == -1) {
-                            scheduleOriginal.push(netId)
-                        } else if (changedshift.available == false) {
-                            const index = scheduleOriginal.indexOf(netId)
-                            if (index != -1) {
-                                scheduleOriginal.splice(index, 1)
-                            }
-                        }
-                        day.shifts[changedshift.hour - 7].schedule = scheduleOriginal
-                    })
-
-                }
-                if (day.day == "R") {
-                    thu.forEach( (changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var scheduleOriginal = shift.schedule
-                        if (changedshift.schedule == true && scheduleOriginal.indexOf(netId) == -1) {
-                            scheduleOriginal.push(netId)
-                        } else if (changedshift.available == false){
-                            const index = scheduleOriginal.indexOf(netId)
-                            if (index != -1) {
-                                scheduleOriginal.splice(index, 1)
-                            }
-                        }
-                        day.shifts[changedshift.hour - 7].schedule = scheduleOriginal
-                    })
-
-                }
-                if (day.day == "F") {
-                    fri.forEach( (changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var scheduleOriginal = shift.schedule
-                        if (changedshift.schedule == true && scheduleOriginal.indexOf(netId) == -1) {
-                            scheduleOriginal.push(netId)
-                        } else if (changedshift.available == false){
-                            const index = scheduleOriginal.indexOf(netId)
-                            if (index != -1) {
-                                scheduleOriginal.splice(index, 1)
-                            }
-                        }
-                        day.shifts[changedshift.hour - 7].schedule = scheduleOriginal
-                    })
-
-                }
-                if (day.day == "S") {
-                    sat.forEach( (changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var scheduleOriginal = shift.schedule
-                        if (changedshift.schedule == true && scheduleOriginal.indexOf(netId) == -1) {
-                            scheduleOriginal.push(netId)
-                        } else if (changedshift.available == false){
-                            const index = scheduleOriginal.indexOf(netId)
-                            if (index != -1) {
-                                scheduleOriginal.splice(index, 1)
-                            }
-                        }
-                        day.shifts[changedshift.hour - 7].schedule = scheduleOriginal
-                    })
-
-                }
-                if (day.day == "U") {
-                    sun.forEach( (changedshift) => {
-                        var shift = day.shifts[changedshift.hour - 7]
-                        var scheduleOriginal = shift.schedule
-                        if (changedshift.schedule == true && scheduleOriginal.indexOf(netId) == -1) {
-                            scheduleOriginal.push(netId)
-                        } else if (changedshift.available == false){
-                            const index = scheduleOriginal.indexOf(netId)
-                            if (index != -1) {
-                                scheduleOriginal.splice(index, 1)
-                            }
-                        }
-                        day.shifts[changedshift.hour - 7].schedule = scheduleOriginal
-                    })
-
-                }
-
             })
         schedules[0].save((err) => {
-            console.log('saved!')
             if (err) {
                 console.log(err)
             }
@@ -370,7 +187,7 @@ module.exports = app => {
     app.get('/master/:day?', getDay)
     app.get('/master/available/:netid?', getAvailable)
     app.get('/master/schedule/:netid?', getScheduled)
-    app.get('/master/shift/:weekday?/:hour?',getShift)
-    app.put('/master/update/availability/:netid?',putAvailability)
-    app.put('/master/update/schedule/:netid?',putSchedule)
+    app.get('/master/shift/:weekday?/:hour?', getShift)
+    app.put('/master/update/availability/:netid?', putAvailability)
+    app.put('/master/update/:weekday?/:hour?', putSchedule)
 }
