@@ -22,6 +22,6 @@ var ScheduleSchema = new Schema({
     week: [weekSchema]});
 
 
-var Schedule = mongoose.model("testdata", ScheduleSchema)
+var Schedule = mongoose.model("schedules", ScheduleSchema)
 
 exports.schedule = Schedule

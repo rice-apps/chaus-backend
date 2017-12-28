@@ -22,6 +22,7 @@ mongoose.connection.on('disconnected', function() {
 	console.log('Mongoose disconnected')
 })
 
+
 process.once('SIGUSR2', function() {
 	shutdown('nodemon restart', function() {
 		process.kill(process.pid, 'SIGUSR2')

@@ -1,5 +1,8 @@
-db.schedules.insert(
 {
+    "_id": {
+        "$oid": "59fec06e734d1d63bdd26104"
+    },
+    "__v": 12,
     "week": [
         {
             "day": "M",
@@ -1546,4 +1549,3 @@ db.schedules.insert(
         }
     ]
 }
-)

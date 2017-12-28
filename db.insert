@@ -92,7 +92,7 @@ db.suns.insert({
 })
 
 <<<<<<< HEAD
-db.TestData.insert({
+db.Schedules.insert({
 {
 	"week": [{
 			"day": "M",
