@@ -1,4 +1,4 @@
-const schedule = require('../models/scheduleModel').schedule
+const schedule = require('../models/scheduleModel').schedule;
 
 const getSchedule = (req, res) => {
     schedule.find({}).exec((err, r) => {
