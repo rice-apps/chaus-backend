@@ -20,6 +20,7 @@ app.use(enableCORS);
 
 require('./routes/users')(app)
 require('./routes/master')(app)
+require('./routes/schedule')(app)
 
 // Get the port from the environment, i.e., Heroku sets it
 const port = process.env.PORT || 3000
