@@ -19,8 +19,8 @@ var ShiftSchema =
   var ScheduleSchema = 
       new Schema({
         
-        week: {type: [ShiftSchema], validate: [(val) => {return val.length == 168}, "Number of shifts is incorrect"]}, // Array of Shifts 
-        // Validate ensures that number of shifts in array is equivalent to 24*7 (168)
+        week: {type: [ShiftSchema], validate: [(val) => {return val.length == 126}, "Number of shifts is incorrect"]}, // Array of Shifts 
+        // Validate ensures that number of shifts in array is equivalent to 18*7 (126)
       })
 
 
