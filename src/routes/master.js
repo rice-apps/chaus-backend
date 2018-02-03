@@ -1,4 +1,4 @@
-const schedule = require('../models/scheduleModel').schedule
+const schedule = require('../models/scheduleModel').schedule;
 
 const getSchedule = (req, res) => {
     schedule.find({}).exec((err, r) => {
@@ -122,6 +122,25 @@ const putAvailability = (req, res) => {
         })
     })
     res.send("successfully updated !")
+}
+
+const putShift = (req, res) => {
+    // Used for testing purposes, can be removed
+    let shifts = []
+    for (let i = 0; i < 168; i++) {
+      shifts.push({status: true, scheduled: ['ob10']})
+    }
+    let shift = new schedule({week: shifts})
+    shift.save((err) => {if(err) {console.log("Error"); return err}})
+    console.log(schedule.find({}));
+    res.send("Done")
+}
+
+const getStuff = (req, res) => {
+    // Used for testing purposes, can be removed
+    schedule.find({}, (err, shifts) => {
+      res.send(shifts)
+    })
 }
 
 const putSchedule = (req, res) => {

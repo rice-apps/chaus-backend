@@ -3,17 +3,11 @@ var mongoose     = require('mongoose')
 require('../db')
 
 // New Schedule Model
-var ScheduleSchema = 
-    new Schema({
-      
-      week: {type: [ShiftSchema], validate: [(val) => {return val.length <= 170}, "Number of shifts exceeds total"]} // Array of Shifts
-      
-    })
 
 var ShiftSchema = 
     new Schema({
       
-      scheduled: [],
+      scheduled: [String],
       status: Boolean // Is it open or closed at the time
       // NetIDs will be assigned to values 1-4, 1 meaning least preferred and 4 meaning most preferred
       // ex: 'wsm3: 4'
@@ -21,6 +15,13 @@ var ShiftSchema =
     },
     {strict: false} // Allows us to continue adding properties
   )
+
+  var ScheduleSchema = 
+      new Schema({
+        
+        week: {type: [ShiftSchema], validate: [(val) => {return val.length == 168}, "Number of shifts is incorrect"]}, // Array of Shifts 
+        // Validate ensures that number of shifts in array is equivalent to 24*7 (168)
+      })
 
 
 var Schedule = mongoose.model("schedules", ScheduleSchema)
