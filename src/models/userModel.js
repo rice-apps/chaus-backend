@@ -1,13 +1,15 @@
 var mongoose     = require('mongoose')
-    , mongoosastic = require('mongoosastic')
+//    , mongoosastic = require('mongoosastic')
     , Schema       = mongoose.Schema
 require('../db')
 
 var UserSchema = new Schema({
-    netid:{type: String, es_indexed: true},
-    name: {type: String, es_indexed: true},
+    netid:{type: String},
+    firstName: {type: String},
+    lastName: {type: String},
     minHour: Number,
-    maxHour: Number
+    maxHour: Number,
+    totalHours: Number
 })
 
 
