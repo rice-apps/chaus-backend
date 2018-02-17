@@ -61,4 +61,5 @@ const getEmployeeScheduled = (req, res) => {
 module.exports = app => {
     app.get('/employee/available/:netid', getEmployeeAvailability)
     app.get('/employee/scheduled/:netid', getEmployeeScheduled)
+    getEmployeeScheduled
 }
