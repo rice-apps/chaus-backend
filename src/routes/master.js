@@ -1,10 +1,10 @@
 const schedule = require('../models/scheduleModel').schedule;
 
 /*
-app.get('/master/schedule', getSchedule)
+GET call for app.get('/master/schedule', getSchedule)
 
 Input: None
-Output: Full schedule
+Output: Full schedule as specified in ScheduleModel
 */
 const getSchedule = (req, res) => {
     schedule.find({}).exec((err, r) => {
@@ -17,13 +17,16 @@ const getSchedule = (req, res) => {
 }
 
 /*
-app.get('/master/shift/:weekday?/:hour?', getShift)
+GET call for app.get('/master/shift/:weekday?/:hour?', getShift)
+Effect: Get the shift specified by :weekday? and :hour?
 
-Input: day and hour ints
-Output: shift object showing:
--shift status (boolean open or closed)
--shift hour (int [0-17])
--lists of users with availabilities 1, 2, 3, and 4
+Inputs:
+- :weekday? -> 1-7 representing days in the week.
+- :hour? ->  0-17 representing hour of the day.
+Output: Shift JSON object showing:
+- shift status (boolean open or closed)
+- shift hour (int [0-17])
+- lists of users with availabilities (on scale 1, 2, 3, and 4)
 */
 const getShift = (req, res) => {
   //.lean() for quick mongoose query
@@ -31,7 +34,6 @@ const getShift = (req, res) => {
   schedule.find({}).lean()
     .exec((err, allShifts) => {
     if (err) {
-        console.log("ERRRO");
         res.send('error has occurred')
     } 
     else {
@@ -39,9 +41,11 @@ const getShift = (req, res) => {
         const shiftNum = parseInt(req.params.weekday * 18) + parseInt(req.params.hour);
         requestedShift = allShifts[0].week[shiftNum];
         console.log("requested shft " + requestedShift);
+        //if no one is scheduled, just return placeholder JSON.
         if (!requestedShift.status) {
             var newShift = {"status": false}
         }
+        //construct "nice" JSON to return to frontend
         else {
             var newShift = {"status": true, "hour": req.params.hour, 1: [], 2: [], 3: [], 4: []}
             newShift.scheduled = requestedShift.scheduled
@@ -57,12 +61,14 @@ const getShift = (req, res) => {
 }
 
 /*
-app.get('/master/hourtotal/:netid?', getHourTotal)
+Call: app.get('/master/hourtotal/:netid?', getHourTotal)
+Effect: gets the total hours worked by user with ID :netid?
 
-Input: user netid
-Output: total number of hours given employee is currently scheduled
+Input: users NetId
+Output: total number of hours the given employee is currently scheduled
 
-NOT FINISHED DOESN'T WORK
+test: jhw5 has 27 instances.
+
 */
 const getHourTotal = (req, res) => {
   schedule.find({}).lean().exec((err, allShifts) => {
@@ -70,20 +76,35 @@ const getHourTotal = (req, res) => {
         res.send('error has occurred')
     } 
     else {
-        hoursum = 0
-        allShifts[0].week.map(shift => {
-            console.log(req.params.netid);
-            console.log(shift.scheduled[1]);
-            console.log(req.params.netid.toString() in shift.scheduled);
-            /*if (shift.scheduled.includes(req.params.netid)) {
-                hoursum++;
-            }*/
-        })
-        res.send(hoursum.toString());
+        const netId = "" + req.params.netid; //"" +... converts to string.
+        //1. get all the shifts.
+        var numIDInstances = allShifts[0].week.map(shift => {
+           return shift.scheduled;
+        });
+        //2. find all the shifts that contain the id specified
+        //   , mapping to 1 if containing shift, 0 otherwise.
+        //3. sum up the array by reducing.
+        var reduced = numIDInstances.map(netids => {
+            if (netids.indexOf(netId) > -1) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }).reduce(getSum);
+        res.send(reduced.toString());
     }
   })
-}
+};
 
+/*
+Effect: helper to reduce over array
+Input:
+- total = accumulator
+- num = next number to add to accumulator.
+ */
+function getSum(total, num) {
+    return total + num;
+}
 
 function updateShift(shifts, changedshift, netId) {
     var availableOriginal = shifts[changedshift.hour - 7].availability
