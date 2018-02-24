@@ -26,12 +26,19 @@ Output: shift object showing:
 -lists of users with availabilities 1, 2, 3, and 4
 */
 const getShift = (req, res) => {
-  schedule.find({}).lean().exec((err, allShifts) => {
+  //.lean() for quick mongoose query
+  //allShifts is what is returned from find({})
+  schedule.find({}).lean()
+    .exec((err, allShifts) => {
     if (err) {
+        console.log("ERRRO");
         res.send('error has occurred')
     } 
     else {
-        requestedShift = allShifts[0].week[parseInt((req.params.weekday * 18) + req.params.hour)];
+        //parseInt since all params are strings
+        const shiftNum = parseInt(req.params.weekday * 18) + parseInt(req.params.hour);
+        requestedShift = allShifts[0].week[shiftNum];
+        console.log("requested shft " + requestedShift);
         if (!requestedShift.status) {
             var newShift = {"status": false}
         }
