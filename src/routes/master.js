@@ -1,5 +1,6 @@
 const schedule = require('../models/scheduleModel').schedule;
 
+//++++++++++++++++++++++++++++++COMPLETED GET REQUESTS+++++++++++++++++++++++++++++++++++++++++
 /*
 GET call for app.get('/master/schedule', getSchedule)
 
@@ -50,7 +51,7 @@ const getShift = (req, res) => {
             var newShift = {"status": true, "hour": req.params.hour, 1: [], 2: [], 3: [], 4: []}
             newShift.scheduled = requestedShift.scheduled
             Object.keys(requestedShift).map((key, index) => {
-                if (!(key == "scheduled" || key == "status")) {
+                if (!(key === "scheduled" || key === "status")) {
                     newShift[requestedShift[key]].push(key);
                 }
             });
@@ -78,13 +79,13 @@ const getHourTotal = (req, res) => {
     else {
         const netId = "" + req.params.netid; //"" +... converts to string.
         //1. get all the shifts.
-        var numIDInstances = allShifts[0].week.map(shift => {
+        let numIDInstances = allShifts[0].week.map(shift => {
            return shift.scheduled;
         });
         //2. find all the shifts that contain the id specified
         //   , mapping to 1 if containing shift, 0 otherwise.
         //3. sum up the array by reducing.
-        var reduced = numIDInstances.map(netids => {
+        let reduced = numIDInstances.map(netids => {
             if (netids.indexOf(netId) > -1) {
                 return 1;
             } else {
@@ -106,6 +107,32 @@ function getSum(total, num) {
     return total + num;
 }
 
+//++++++++++++++++++++++++++++++UNFINISHED+++++++++++++++++++++++++++++++++++++++++
+
+/*
+Put call:'/master/update/availability/:weekday?/:hour?/:netid?'
+Effect: Given netid, weekday, hour, schedule netid at the appropriate shift.
+Input:
+- :netid? => user netid
+- :hour? => hour to schedule at
+- :weekday? => day to schedule at
+- need unique identifier for each shift!!!!
+ */
+const putScheduled = (req, res) => {
+	schedule.find({}).lean()
+	  .exec((err, schedule) => {
+		  if (err) {
+			  res.send('error has occurred')
+		  }
+		  else {
+			  const shiftNum = parseInt(req.params.weekday * 18) + parseInt(req.params.hour);
+
+			  schedule[0].week[shiftNum]
+		  }
+	  });
+}
+
+//OLD CALLS:
 function updateShift(shifts, changedshift, netId) {
     var availableOriginal = shifts[changedshift.hour - 7].availability
     if (changedshift.available == true && availableOriginal.indexOf(netId) == -1) {
@@ -152,7 +179,7 @@ const putSchedule = (req, res) => {
                     shifttbChanged.schedule = req.body.schedule;
                     day[hour - 7] = shifttbChanged
                 }
-            })
+            });
         schedules[0].save((err) => {
             if (err) {
                 console.log(err)
@@ -167,6 +194,6 @@ module.exports = app => {
     app.get('/master/schedule', getSchedule)
     app.get('/master/shift/:weekday?/:hour?', getShift)
     app.get('/master/hourtotal/:netid?', getHourTotal)
-    app.put('/master/update/availability/:netid?', putAvailability)
+    app.put('/master/update/availability/:weekday?/:hour?/:netid?', putScheduled)
     app.put('/master/update/:weekday?/:hour?', putSchedule)
 }
