@@ -167,6 +167,9 @@ const putAvailability = (req, res) => {
     res.send("successfully updated !")
 }
 
+/*
+OLD FUNCTION/PUT CALL FOR OLD DB STRUCTURE.
+ */
 const putSchedule = (req, res) => {
     const weekday = req.params.weekday;
     const hour = req.params.hour;
