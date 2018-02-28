@@ -17,7 +17,7 @@ const getEmployeeAvailability = (req, res) => {
         // Get current shift
         let shift = week[i]
         // Get value from property not strictly defined in model
-        let availability = shift.get("wsm3")
+        let availability = shift.get(employee)
         // If value is found, add preference to array
         if (availability != undefined) {
           availabilityArray.push(availability)
