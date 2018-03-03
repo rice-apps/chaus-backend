@@ -14,6 +14,7 @@ const enableCORS = function(req, res, next) {
      }
 }
 const app = express()
+app.use(bodyParser.urlencoded())
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(enableCORS);

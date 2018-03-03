@@ -172,20 +172,51 @@ const putAvailability = (req, res) => {
 
 /*
 OLD FUNCTION/PUT CALL FOR OLD DB STRUCTURE.
+
+/master/update/:weekday?/:hour?
+
+Front end call that calls this PUT call:
+
+ const payload = {"p1": p1, "p2": p2, "p3": p3, "p4": p4, "schedule": schedule, "weekday": weekday, "hour": hour}
+
  */
 const putSchedule = (req, res) => {
-    const weekday = req.params.weekday;
-    const hour = req.params.hour;
-    schedule.find({}).exec((err, schedules) => {
-        schedules[0].week.map(
-            day => {
-                if (day.day == weekday) {
-                    var shifttbChanged = day.shifts[hour - 7];
-                    shifttbChanged.availability = req.body.availability;
-                    shifttbChanged.schedule = req.body.schedule;
-                    day[hour - 7] = shifttbChanged
-                }
-            });
+	const shiftNum = parseInt(req.params.weekday * 18) + parseInt(req.params.hour);
+	const p1 = req.body.p1;
+	const p2 = req.body.p2;
+	const p3 = req.body.p3;
+	const p4 = req.body.p4;
+	const new_sched = req.body.schedule;
+	schedule.find({}).exec((err, schedules) => {
+		console.log("new scheduled people:", new_sched);
+		var shift = schedules[0].week[shiftNum];
+		console.log("SHIFT before updates", shift);
+		//update scheduled people
+        shift.scheduled = new_sched;
+        //update priorities
+        for(i = 0; i < p1.length; i++) {
+            shift[p1[i]] = 1;
+        }
+		for(i = 0; i < p2.length; i++) {
+			shift[p2[i]] = 2;
+		}
+		for(i = 0; i < p3.length; i++) {
+			shift[p3[i]] = 3;
+		}
+		for(i = 0; i < p4.length; i++) {
+			shift[p4[i]] = 4;
+		}
+		console.log("SHIFT AFTER updates", shift);
+		// schedules[0].week[shiftNum].map(
+         //    shift => {
+         //        console.log("SHIFT:", shift);
+         //        if (day.day == weekday) {
+         //            var shifttbChanged = day.shifts[hour - 7];
+         //            shifttbChanged.availability = req.body.availability;
+         //            shifttbChanged.schedule = req.body.schedule;
+         //            day[hour - 7] = shifttbChanged
+         //        }
+         //    });
         schedules[0].save((err) => {
             if (err) {
                 console.log(err)
@@ -200,5 +231,5 @@ module.exports = app => {
     app.get('/master/schedule', getSchedule)
     app.get('/master/shift/:weekday?/:hour?', getShift)
     app.get('/master/hourtotal/:netid?', getHourTotal)
-    app.put('/master/update/:weekday?/:hour?', putScheduled)
+    app.put('/master/update/:weekday?/:hour?', putSchedule)
 }
