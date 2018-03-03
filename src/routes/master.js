@@ -112,6 +112,8 @@ function getSum(total, num) {
 /*
 Put call:'/master/update/availability/:weekday?/:hour?/:netid?'
 Effect: Given netid, weekday, hour, schedule netid at the appropriate shift.
+CONSIDER:
+- payload from front-end? What form will it be?
 Input:
 - :netid? => user netid
 - :hour? => hour to schedule at
@@ -125,7 +127,8 @@ const putScheduled = (req, res) => {
 			  res.send('error has occurred')
 		  }
 		  else {
-			  const shiftNum = parseInt(req.params.weekday * 18) + parseInt(req.params.hour);
+			  const shiftNum = parseInt(req.params.weekday * 18)
+				+ parseInt(req.params.hour);
 
 			  schedule[0].week[shiftNum]
 		  }
