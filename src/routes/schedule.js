@@ -27,12 +27,38 @@ const getDay = (req, res) => {
 
 // Helper Function for getDay
 const parseShifts = (shifts, day) => {
-  let requestedShifts = []
+  var requestedShifts = []
   // Gets 18 shifts
   for (let i = (day * 18); i < (day*18) + 18; i++) {
     requestedShifts.push(shifts.week[i])
   }
   return requestedShifts
+}
+
+const getShift = (req, res) => {
+  // Get a specific shift
+  schedule.find({}).lean().exec((err, allShifts) => {
+    if (err) {
+        res.send('error has occurred')
+    } 
+    else {
+        requestedShift = allShifts[(req.params.day * 18) + req.params.hour]
+        res.send(requestedShift)
+    }
+  })
+}
+
+const getAvailability = (req, res) => {
+  // Get the shifts of a certain user with a specified availability type
+  schedule.find({}).lean().exec((err, allShifts) => {
+    if (err) {
+        res.send('error has occurred')
+    } 
+    else {
+        filtered_shifts = r[0].week.filter(shift => shift[req.params.netid] = req.params.availability)
+        res.send(filtered_shifts)
+    }
+  })
 }
 
 const addUserToShift = (req, res) => {
