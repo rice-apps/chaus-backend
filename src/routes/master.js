@@ -200,6 +200,5 @@ module.exports = app => {
     app.get('/master/schedule', getSchedule)
     app.get('/master/shift/:weekday?/:hour?', getShift)
     app.get('/master/hourtotal/:netid?', getHourTotal)
-    app.put('/master/update/availability/:weekday?/:hour?/:netid?', putScheduled)
-    app.put('/master/update/:weekday?/:hour?', putSchedule)
+    app.put('/master/update/:weekday?/:hour?', putScheduled)
 }
