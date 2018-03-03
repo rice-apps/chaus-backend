@@ -14,12 +14,15 @@ const enableCORS = function(req, res, next) {
      }
 }
 const app = express()
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+app.use(bodyParser());
 app.use(cookieParser());
 app.use(enableCORS);
 
 require('./routes/users')(app)
 require('./routes/master')(app)
+require('./routes/employee')(app)
+require('./routes/schedule')(app)
 
 // Get the port from the environment, i.e., Heroku sets it
 const port = process.env.PORT || 3000
