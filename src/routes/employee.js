@@ -1,3 +1,4 @@
+var _ = require('lodash')
 const schedule = require('../models/scheduleModel').schedule;
 
 const getEmployeeAvailability = (req, res) => {
@@ -57,9 +58,49 @@ const getEmployeeScheduled = (req, res) => {
 
 }
 
+const reformatShifts = (req, res) => {
+  // reformat shifts into (ordered sequence of objects):
+  // {<employeename>: <preference>, changed: true/false}
+}
+
+const setEmployeeAvailability = (req, res) => {
+  const employee = req.params.netid
+  const inputShifts = req.body.shifts
+  // Will need to reformat this data
+  const reformattedShifts = reformatShifts(inputShifts)
+  // Get Schedule
+  schedule.find({}).exec((err, shifts) => {
+    // Array of already set shifts
+    let week = shifts[0].week
+    // Check if different input size; if so, stop
+    if (inputShifts.length != week.length) {
+      res.send("Error: Shifts Length Mismatch")
+    }
+    // Iterate through each shift in input shifts, see if anything changed
+    for (let i = 0; i < inputShifts.length; i++) {
+      let inputShift = inputShifts[i]
+      let shift = week[i]
+      // res.send("Pause")
+      // Check if shift changed
+      if (!_.isEqual(inputShift, shift)) {
+        shift.employee = inputShift.employee
+      }
+    }
+    res.send("Pause")
+    // Then replace current stuff with this new one
+    schedule.replaceOne({}, {week: shifts[0].week}, (err, doc) => {
+      if (err) {
+        console.log("Rip")
+      }
+      res.send("Success")
+    })
+  })
+}
+
 
 module.exports = app => {
     app.get('/employee/available/:netid', getEmployeeAvailability)
     app.get('/employee/scheduled/:netid', getEmployeeScheduled)
+    app.put('/employee/available/:netid', setEmployeeAvailability)
     getEmployeeScheduled
 }

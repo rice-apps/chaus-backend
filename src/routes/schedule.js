@@ -37,21 +37,25 @@ const parseShifts = (shifts, day) => {
 
 const addUserToShift = (req, res) => {
   // Schedules user for shift
+  // parameters in url
   const day = req.params.day
   const hour = req.params.hour
+  // body is object passed into request
   const user = req.body.user
   schedule.find({}, (err, shifts) => {
     if (err) {
       res.send(err)
     }
-    let original_shifts = shifts[0].week
+    // let original_shifts = shifts[0].week
+    // Gets shift object from correct day and hour
     shift = findShift(shifts[0], day, hour)
     newScheduled = shift.scheduled
+    // if user already scheduled, send back error 
     if (newScheduled.indexOf(user) >= 0) {
       res.send("User Already Scheduled")
     }
     else {
-      // Add user to scheduled array 
+      // Add user to scheduled array
       newScheduled.push(user)
       shift.scheduled = newScheduled
       // Replaces entire week schedule to accomodate for changes
