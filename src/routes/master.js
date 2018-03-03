@@ -79,13 +79,13 @@ const getHourTotal = (req, res) => {
     else {
         const netId = "" + req.params.netid; //"" +... converts to string.
         //1. get all the shifts.
-        let numIDInstances = allShifts[0].week.map(shift => {
+        var numIDInstances = allShifts[0].week.map(shift => {
            return shift.scheduled;
         });
         //2. find all the shifts that contain the id specified
         //   , mapping to 1 if containing shift, 0 otherwise.
         //3. sum up the array by reducing.
-        let reduced = numIDInstances.map(netids => {
+        var reduced = numIDInstances.map(netids => {
             if (netids.indexOf(netId) > -1) {
                 return 1;
             } else {
