@@ -58,41 +58,52 @@ const getEmployeeScheduled = (req, res) => {
 
 }
 
-const reformatShifts = (req, res) => {
+const reformatShifts = (shifts, netid) => {
   // reformat shifts into (ordered sequence of objects):
   // {<employeename>: <preference>, changed: true/false}
+  reformattedShifts = []
+  for (day in shifts) {
+    let dayShifts = shifts[day]
+    for (let i = 0; i < shifts[day].length; i++) {
+      reformattedShifts.push({[netid]: dayShifts[i].available, changed: dayShifts[i].changed})
+      // newShiftObject = {changed: dayShifts[i].changed}
+      // newShiftObject[netid] = dayShifts[i].available,
+      // reformattedShifts.push(newShiftObject)
+    }
+  }
+  return reformattedShifts
 }
 
 const setEmployeeAvailability = (req, res) => {
   const employee = req.params.netid
   const inputShifts = req.body.shifts
   // Will need to reformat this data
-  const reformattedShifts = reformatShifts(inputShifts)
+  // Now data represented like: {changed: true/false, netid: preference#}
+  const reformattedShifts = reformatShifts(inputShifts, employee)
   // Get Schedule
   schedule.find({}).exec((err, shifts) => {
     // Array of already set shifts
     let week = shifts[0].week
     // Check if different input size; if so, stop
-    if (inputShifts.length != week.length) {
-      res.send("Error: Shifts Length Mismatch")
+    if (reformattedShifts.length != week.length) {
+      res.status(500).send("Error: Shifts Length Mismatch")
+      return
     }
     // Iterate through each shift in input shifts, see if anything changed
-    for (let i = 0; i < inputShifts.length; i++) {
-      let inputShift = inputShifts[i]
-      let shift = week[i]
-      // res.send("Pause")
+    for (let i = 0; i < reformattedShifts.length; i++) {
+      let inputShift = reformattedShifts[i]
+      var shift = week[i]
       // Check if shift changed
-      if (!_.isEqual(inputShift, shift)) {
-        shift.employee = inputShift.employee
+      if (inputShift.changed) {
+        shift.set({[employee]: inputShift[employee]})
       }
     }
-    res.send("Pause")
     // Then replace current stuff with this new one
     schedule.replaceOne({}, {week: shifts[0].week}, (err, doc) => {
       if (err) {
-        console.log("Rip")
+        console.log(err)
       }
-      res.send("Success")
+      res.send(200)
     })
   })
 }
