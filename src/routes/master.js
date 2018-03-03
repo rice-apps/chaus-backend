@@ -43,7 +43,7 @@ const getShift = (req, res) => {
         requestedShift = allShifts[0].week[shiftNum];
         console.log("requested shft " + requestedShift);
         //if no one is scheduled, just return placeholder JSON.
-        if (!requestedShift.status) {
+        if (!(requestedShift.status)) {
             var newShift = {"status": false}
         }
         //construct "nice" JSON to return to frontend
