@@ -36,7 +36,7 @@ const getShift = (req, res) => {
     .exec((err, allShifts) => {
     if (err) {
         res.send('error has occurred')
-    } 
+    }
     else {
         //parseInt since all params are strings
         const shiftNum = parseInt(req.params.weekday * 18) + parseInt(req.params.hour);
@@ -51,7 +51,7 @@ const getShift = (req, res) => {
             var newShift = {"status": true, "hour": req.params.hour, 1: [], 2: [], 3: [], 4: []}
             newShift.scheduled = requestedShift.scheduled
             Object.keys(requestedShift).map((key, index) => {
-                if (!(key === "scheduled" || key === "status")) {
+                if (!(key === "scheduled" || key === "status" || key === "_id")) {
                     newShift[requestedShift[key]].push(key);
                 }
             });
@@ -75,7 +75,7 @@ const getHourTotal = (req, res) => {
   schedule.find({}).lean().exec((err, allShifts) => {
     if (err) {
         res.send('error has occurred')
-    } 
+    }
     else {
         const netId = "" + req.params.netid; //"" +... converts to string.
         //1. get all the shifts.
