@@ -1,6 +1,13 @@
 var _ = require('lodash')
 const schedule = require('../models/scheduleModel').schedule;
 
+// const express = require('express')
+// var authMiddleWare = require('../middleware/auth-middleware'); // auth checker
+// var router = express.Router();
+// router.use(authMiddleWare);
+// router.use(bodyParser.json());
+
+
 const getEmployeeAvailability = (req, res) => {
   // Gets employee from url parameters
   const employee = req.params.netid

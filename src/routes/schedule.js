@@ -1,5 +1,12 @@
 const schedule = require('../models/scheduleModel').schedule;
 
+// const express = require('express')
+// var authMiddleWare = require('../middleware/auth-middleware'); // auth checker
+// var router = express.Router();
+// router.use(authMiddleWare);
+// router.use(bodyParser.json());
+
+
 const getSchedule = (req, res) => {
     // Get All Shifts in Schedule
     schedule.find({}).lean().exec((err, allShifts) => {

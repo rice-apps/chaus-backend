@@ -24,6 +24,9 @@ require('./routes/master')(app)
 require('./routes/employee')(app)
 require('./routes/schedule')(app)
 
+
+require('./routes/auth')(app)
+
 // Get the port from the environment, i.e., Heroku sets it
 const port = process.env.PORT || 3000
 

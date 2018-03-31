@@ -1,6 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
+// const express = require('express')
+// var authMiddleWare = require('../middleware/auth-middleware'); // auth checker
+// var router = express.Router();
+// router.use(authMiddleWare);
+// router.use(bodyParser.json());
 
 router.get('/', (req, res) => {
   res.sendStatus(200)

@@ -1,5 +1,12 @@
 const schedule = require('../models/scheduleModel').schedule;
 
+// const express = require('express')
+// var authMiddleWare = require('../middleware/auth-middleware'); // auth checker
+// var router = express.Router();
+// router.use(authMiddleWare);
+// router.use(bodyParser.json());
+
+
 //++++++++++++++++++++++++++++++COMPLETED GET REQUESTS+++++++++++++++++++++++++++++++++++++++++
 /*
 GET call for app.get('/master/schedule', getSchedule)

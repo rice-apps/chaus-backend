@@ -5,7 +5,14 @@ const User = require('../models/userModel').user
 const schedule = require('../models/scheduleModel').schedule;
 var mongoose = require('mongoose')
 mongoose.Promise = require('bluebird');
+
+// const express = require('express')
+// var authMiddleWare = require('../middleware/auth-middleware'); // auth checker
+// var router = express.Router();
+// router.use(authMiddleWare);
+// router.use(bodyParser.json());
 // Calls from employee.js
+
 const getEmployeeScheduled = require('./employee').getEmployeeScheduled
 
 const getUsers = (req, res) => {
