@@ -40,6 +40,29 @@ const getNetIDs = (req, res) => {
     })
 }
 
+/*
+Call: Helper function checkUser(jhw5)
+Effect: checks whether IDP logged user is in DB
+Input: users NetId
+Output: whether user is in our DB or not
+test: jhw5 has 27 instances.
+*/
+const checkUser = (netid) => {
+    User.find({netid: netid}).exec((err, user) => {
+      if (err) {
+        return "Error";
+      }
+      else {
+        if (user == {}) {
+          return "User Not Found";
+        }
+        else {
+          return user;
+        }
+      }
+    });
+}
+
 // const getTotalHours = (req, res) => {
 //   const netid = req.params.netid
 //   let counter = 0
