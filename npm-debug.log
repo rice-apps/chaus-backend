@@ -9,7 +9,7 @@
 6 silly lifecycle RiceChaus@0.0.0~prestart: no script for prestart, continuing
 7 info lifecycle RiceChaus@0.0.0~start: RiceChaus@0.0.0
 8 verbose lifecycle RiceChaus@0.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle RiceChaus@0.0.0~start: PATH: /Users/wmundy/.nvm/versions/node/v7.3.0/lib/node_modules/npm/bin/node-gyp-bin:/Users/wmundy/Documents/OneDrive/Rice/RiceApps/chaus-backend/node_modules/.bin:/Users/wmundy/.rvm/gems/ruby-2.4.0/bin:/Users/wmundy/.rvm/gems/ruby-2.4.0@global/bin:/Users/wmundy/.rvm/rubies/ruby-2.4.0/bin:/Users/wmundy/.nvm/versions/node/v7.3.0/bin:/Users/wmundy/bin:/usr/local/bin:/usr/local/share/npm/bin:/usr/local/n/versions/node/9.2.1/bin/node:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/wmundy/.rvm/bin:/usr/local/bin
+9 verbose lifecycle RiceChaus@0.0.0~start: PATH: /Users/wmundy/.nvm/versions/node/v7.3.0/lib/node_modules/npm/bin/node-gyp-bin:/Users/wmundy/Documents/OneDrive/Rice/RiceApps/chaus-backend/node_modules/.bin:/Users/wmundy/.rvm/gems/ruby-2.4.0/bin:/Users/wmundy/.rvm/gems/ruby-2.4.0@global/bin:/Users/wmundy/.rvm/rubies/ruby-2.4.0/bin:/Users/wmundy/.nvm/versions/node/v7.3.0/bin:/Users/wmundy/bin:/usr/local/bin:/usr/local/share/npm/bin:/usr/local/n/versions/node/9.2.1/bin/node:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin:/Users/wmundy/.rvm/bin:/usr/local/bin
 10 verbose lifecycle RiceChaus@0.0.0~start: CWD: /Users/wmundy/Documents/OneDrive/Rice/RiceApps/chaus-backend
 11 silly lifecycle RiceChaus@0.0.0~start: Args: [ '-c', 'node ./src/index.js' ]
 12 silly lifecycle RiceChaus@0.0.0~start: Returned: code: 1  signal: null
