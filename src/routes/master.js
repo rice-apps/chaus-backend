@@ -84,14 +84,14 @@ const getHourTotal = (req, res) => {
         });
         //2. find all the shifts that contain the id specified
         //   , mapping to 1 if containing shift, 0 otherwise.
-        //3. sum up the array by reducing.
         var reduced = numIDInstances.map(netids => {
             if (netids.indexOf(netId) > -1) {
                 return 1;
             } else {
                 return 0;
             }
-        }).reduce(getSum);
+			//3. sum up the array by reducing.
+		}).reduce(getSum);
         res.send(reduced.toString());
     }
   })
