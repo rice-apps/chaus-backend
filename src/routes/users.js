@@ -63,6 +63,54 @@ const checkUser = (netid) => {
     });
 }
 
+
+const addUser = (req, res) => {
+    console.log("starting");
+    //Adding new document into the Model.
+
+    //1. Check if the user with the netid is already in the model
+    User.find({netid: req.params.netid}).exec((err, user) => {
+        if (err) {
+            res.send("Error occurred")
+        } else {
+            console.log("length " + user.length);
+            if (user.length === 0) {
+                //2. Create user if not already in database
+                let minHour = parseInt(req.body.minHour)
+                let maxHour = parseInt(req.body.maxHour)
+
+                //TODO: do i need to check if the payload is the correct format?
+                // if (!minHour){
+                // 	minHour = 0
+                // }
+                // if (!maxHour) {
+                // 	maxHour = 5
+                // }
+                User.create({netid:req.params.netid,
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    minHour: minHour,
+                    maxHour: maxHour,
+                    totalHours: 0 }, function (err, user) {
+                    if (err) {
+                        res.send('error in creating');
+                    } else {
+                        User.find({}).exec((err, users) => {
+                            if (err) {
+                                res.send('error has occured')
+                            } else {
+                                res.json(users)
+                            }
+                        })
+                    }
+                });
+            } else {
+                res.send("Already in database")
+            }
+        }
+    });
+    console.log("add? " + i);
+};
 // const getTotalHours = (req, res) => {
 //   const netid = req.params.netid
 //   let counter = 0
@@ -108,26 +156,21 @@ const removeUser = (req, res) => {
             }
             else {
                 new_week = allShifts[0].week
-                console.log("Allshifts: " + allShifts[0]);
+                new_week = new_week.toObject()
+
                 for (i = 0; i < new_week.length; i++){
-                    console.log("new_week[i] before: " + new_week[i]);
                     new_week[i].scheduled = new_week[i].scheduled.filter(x => x != netid)
-                    console.log("net id to remove: " + netid)
                     var bool = 'da30' in new_week[i];
-                    console.log("new_week[i]: " + new_week[i]);
-                    console.log("bool : " + bool );
+
                     if (netid in new_week[i]){
-                        console.log(new_week[i][netid])
                         delete new_week[i][netid]
                     }
                 }
-                // allShifts[0].week = new_week
-                // allShifts[0].save(function(err) {
-                //     if (err) return handleError(err);
-                //     //res.send(allShifts[0]);
-                // })
-                // console.log(new_week)
-                allShifts[0].week.set(new_week)
+                allShifts[0].week = new_week
+                allShifts[0].save(function(err) {
+                    if (err) return handleError(err);
+                    //res.send(allShifts[0]);
+                })
 
             }
         })
@@ -147,6 +190,8 @@ module.exports = app => {
     app.get('/user/:netid?', getUser)
     app.get('/netids', getNetIDs)
     app.get('/remove/:netid?', removeUser)
+    app.put('/add/:netid?', addUser)
+
     // app.get('/user/hours/:netid', getTotalHours)
     // app.put('/user/:netid?', updateUser)
 }
