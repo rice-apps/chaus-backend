@@ -67,7 +67,7 @@ const checkUser = (netid) => {
 //   const netid = req.params.netid
 //   let counter = 0
 //   // Get entire schedule
-//   schedule.find({}).exec((err, shifts) => {
+//   S.find({}).exec((err, shifts) => {
 //     // Array of shifts
 //     let week = shifts[0].week
 //     if (err) {
@@ -88,11 +88,65 @@ const checkUser = (netid) => {
 //     }
 //   })
 // }
+const removeUser = (req, res) => {
+    const netid = req.params.netid
 
+
+
+    User.remove({netid:netid}).exec((err, user) => {
+        if (err) {
+            return "Error";
+        }
+        // user deleted
+
+        // delete from schedule
+        // take from availability and scheduled list
+
+        schedule.find({}).exec((err, allShifts) => {
+            if (err) {
+                res.send('error has occurred')
+            }
+            else {
+                new_week = allShifts[0].week
+                console.log("Allshifts: " + allShifts[0]);
+                for (i = 0; i < new_week.length; i++){
+                    console.log("new_week[i] before: " + new_week[i]);
+                    new_week[i].scheduled = new_week[i].scheduled.filter(x => x != netid)
+                    console.log("net id to remove: " + netid)
+                    var bool = 'da30' in new_week[i];
+                    console.log("new_week[i]: " + new_week[i]);
+                    console.log("bool : " + bool );
+                    if (netid in new_week[i]){
+                        console.log(new_week[i][netid])
+                        delete new_week[i][netid]
+                    }
+                }
+                // allShifts[0].week = new_week
+                // allShifts[0].save(function(err) {
+                //     if (err) return handleError(err);
+                //     //res.send(allShifts[0]);
+                // })
+                // console.log(new_week)
+                allShifts[0].week.set(new_week)
+
+            }
+        })
+
+        User.find({}).exec((err, users) => {
+            if (err) {
+                res.send('error has occured')
+            } else {
+                res.json(users)
+            }
+        })
+    })
+
+}
 module.exports = app => {
     app.get('/users', getUsers)
     app.get('/user/:netid?', getUser)
     app.get('/netids', getNetIDs)
+    app.get('/remove/:netid?', removeUser)
     // app.get('/user/hours/:netid', getTotalHours)
     // app.put('/user/:netid?', updateUser)
 }

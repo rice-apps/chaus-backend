@@ -19,6 +19,7 @@ const getDay = (req, res) => {
         res.send('error has occurred')
     }
     else {
+
         requestedShifts = parseShifts(allShifts[0], req.params.day)
         res.send(requestedShifts)
     }
