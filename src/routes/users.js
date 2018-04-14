@@ -63,7 +63,14 @@ const checkUser = (netid) => {
     });
 }
 
+/*
+Create a user entry in the database:
+url: /add/:netid?
 
+Payload format:  (req.body)
+ e.g. {firstName: Will, lastName: Mundy, minHour: 8, maxHour: 16}
+
+ */
 const addUser = (req, res) => {
     console.log("starting");
     //Adding new document into the Model.
@@ -78,20 +85,16 @@ const addUser = (req, res) => {
                 //2. Create user if not already in database
                 let minHour = parseInt(req.body.minHour)
                 let maxHour = parseInt(req.body.maxHour)
-
                 //TODO: do i need to check if the payload is the correct format?
-                // if (!minHour){
-                // 	minHour = 0
-                // }
-                // if (!maxHour) {
-                // 	maxHour = 5
-                // }
-                User.create({netid:req.params.netid,
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
-                    minHour: minHour,
-                    maxHour: maxHour,
-                    totalHours: 0 }, function (err, user) {
+				var user = new User(
+				  {netid:req.params.netid,
+					firstName: req.body.firstName,
+					lastName: req.body.lastName,
+					minHour: minHour,
+					maxHour: maxHour,
+					totalHours: 0 });
+                console.log(user);
+                User.create(user, function (err, user) {
                     if (err) {
                         res.send('error in creating');
                     } else {
@@ -109,8 +112,9 @@ const addUser = (req, res) => {
             }
         }
     });
-    console.log("add? " + i);
 };
+
+
 // const getTotalHours = (req, res) => {
 //   const netid = req.params.netid
 //   let counter = 0
@@ -191,7 +195,6 @@ module.exports = app => {
     app.get('/netids', getNetIDs)
     app.get('/remove/:netid?', removeUser)
     app.put('/add/:netid?', addUser)
-
     // app.get('/user/hours/:netid', getTotalHours)
     // app.put('/user/:netid?', updateUser)
 }
