@@ -21,11 +21,11 @@ var ShiftSchema =
       new Schema({
         week: {type: [ShiftSchema], validate: [(val) => {return val.length == 126}, "Number of shifts is incorrect"]}, // Array of Shifts
         // Validate ensures that number of shifts in array is equivalent to 18*7 (126)
-				//index [0 - 125]s
+				//index [0 - 125]
 
       })
 
 
-var Schedule = mongoose.model("schedules", ScheduleSchema, "testingschedule")
+var Schedule = mongoose.model("schedules", ScheduleSchema, "newschedule")
 
 exports.schedule = Schedule
