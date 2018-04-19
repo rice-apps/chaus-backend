@@ -110,8 +110,8 @@ const setEmployeeAvailability = (req, res) => {
 
 
 module.exports = app => {
-    app.get('/employee/available/:netid', getEmployeeAvailability)
-    app.get('/employee/scheduled/:netid', getEmployeeScheduled)
-    app.put('/employee/available/:netid', setEmployeeAvailability)
+    app.get('/api/employee/available/:netid', getEmployeeAvailability)
+    app.get('/api/employee/scheduled/:netid', getEmployeeScheduled)
+    app.put('/api/employee/available/:netid', setEmployeeAvailability)
     getEmployeeScheduled
 }

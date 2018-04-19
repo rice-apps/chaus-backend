@@ -137,8 +137,8 @@ const findShift = (shifts, day, hour) => {
 }
 
 module.exports = app => {
-    app.get('/schedule', getSchedule)
-    app.get('/schedule/:day?', getDay)
-    app.put('/schedule/shift/:day?/:hour?', addUserToShift)
-    app.delete('/schedule/shift/:day?/:hour?', removeUserFromShift)
+    app.get('/api/schedule', getSchedule)
+    app.get('/api/schedule/:day?', getDay)
+    app.put('/api/schedule/shift/:day?/:hour?', addUserToShift)
+    app.delete('/api/schedule/shift/:day?/:hour?', removeUserFromShift)
 }

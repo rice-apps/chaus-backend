@@ -229,8 +229,8 @@ const putAvailability = (req, res) => {
 }
 
 module.exports = app => {
-    app.get('/master/schedule', getSchedule)
-    app.get('/master/shift/:weekday?/:hour?', getShift)
-    app.get('/master/hourtotal/:netid?', getHourTotal)
-    app.put('/master/update/:weekday?/:hour?', putSchedule)
+    app.get('/api/master/schedule', getSchedule)
+    app.get('/api/master/shift/:weekday?/:hour?', getShift)
+    app.get('/api/master/hourtotal/:netid?', getHourTotal)
+    app.put('/api/master/update/:weekday?/:hour?', putSchedule)
 }

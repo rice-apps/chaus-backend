@@ -190,11 +190,11 @@ const removeUser = (req, res) => {
 
 }
 module.exports = app => {
-    app.get('/users', getUsers)
-    app.get('/user/:netid?', getUser)
-    app.get('/netids', getNetIDs)
-    app.get('/remove/:netid?', removeUser)
-    app.put('/add/:netid?', addUser)
+    app.get('/api/users', getUsers)
+    app.get('/api/user/:netid?', getUser)
+    app.get('/api/netids', getNetIDs)
+    app.get('/api/remove/:netid?', removeUser)
+    app.put('/api/add/:netid?', addUser)
     // app.get('/user/hours/:netid', getTotalHours)
     // app.put('/user/:netid?', updateUser)
 }

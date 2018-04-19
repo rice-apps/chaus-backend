@@ -85,5 +85,5 @@ var sendJSON = function (res, userID, username, token) {
 };
 
 module.exports = app => {
-    app.get('/auth', getAuth)
+    app.get('/api/auth', getAuth)
 }
