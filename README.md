@@ -1,4 +1,4 @@
-# RiceChaus Backend API
+# Chaus Scheduler Backend API
 
 
 
