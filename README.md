@@ -1,24 +1,41 @@
-RiceChaus Backend Application
-After cloning repo, run the following:
+# RiceChaus Backend API
+
+
+
+## After cloning repo, run the following:
+
 1. npm install
-2. npm run start
-3. navigate to http://localhost:8080 
+2. Set up your .env file (look below)
 
-If you have mongoDB installed, you can run the following to access the mlab database: 
-- mongo ds143449.mlab.com:43449/chaus -u jhw5 -p jhw5
-- show collections
+---
 
+## Setting up your local configurations:
 
-Curl Commands:
-
-// get all users
-- curl -H 'Content-Type: application/json' http://localhost:3000/users
-
-// getting specific users and putting in specific users don't work
-- curl -H 'Content-Type: application/json' http://localhost:3000/netids
-
-
-
-// get each day of the week:
-- curl -H 'Content-Type: application/json' http://localhost:3000/mon
-
+1. You will need to create a .env file locally at the top level of your project folder
+        |node_modules/
+            - ./src/
+            - ***.env***
+            - .babelrc
+            - .gitignore
+            - ...
+    ```
+        ChausBackend/
+        │   README.md
+        │   **.env**
+        │   ...
+        └───node-Modules/
+        │   │   ...
+        └───src/
+            │   ...
+    ```
+2. In your .env file, include the following things:
+    ```
+        secret = _____________
+        db_uri = _____________
+        CASValidateURL = __________________
+        thisServiceURL = http://localhost:XXXX/auth
+        frontendURL = http://localhost:XXXX
+    ```
+    - Keep in mind that your .env file will change depending on whether or not you are on dev or prod
+3.  npm run start
+4.  Access API at http://___________/api 
