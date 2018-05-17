@@ -64,6 +64,53 @@ const checkUser = (netid) => {
 }
 
 /*
+Set the MinHour Property for a User
+url: /minHour/:netid?
+
+PUT REQUEST
+
+Payload format: (req.body)
+e.g. {minHour: 8}
+*/
+const setUserMinHour = (req, res) => {
+    // Get netid from url params
+    let netid = req.params.netid
+    // Get minHour from request body
+    let minHour = req.body.minHour
+    // Mongoose Call findOneAndUpdate; use {new: true} to send back the altered document
+    // Search for user by netid first, then change the minHour attribute
+    User.findOneAndUpdate({netid: netid}, {minHour: minHour}, {new: true}, (err, user) => {
+        if (err) {
+            res.send("Error Occurred.")
+        }
+        else {
+            // Altered docu
+            res.send(user)
+        }
+    })
+}
+
+/*
+Set the MaxHour Property for a User
+url: /maxHour/:netid?
+
+Payload format: (req.body)
+e.g. {maxHour: 8}
+*/
+const setUserMaxHour = (req, res) => {
+    let netid = req.params.netid
+    let maxHour = req.body.maxHour
+    User.findOneAndUpdate({netid: netid}, {maxHour: maxHour}, {new: true}, (err, user) => {
+        if (err) {
+            res.send("Error Occurred.")
+        }
+        else {
+            res.send(user)
+        }
+    })
+}
+
+/*
 Create a user entry in the database:
 url: /add/:netid?
 
@@ -194,6 +241,8 @@ module.exports = app => {
     app.get('/api/user/:netid?', getUser)
     app.get('/api/netids', getNetIDs)
     app.get('/api/remove/:netid?', removeUser)
+    app.put('/api/minHour/:netid?', setUserMinHour)
+    app.put('/api/maxHour/:netid?', setUserMaxHour)
     app.put('/api/add/:netid?', addUser)
     // app.get('/user/hours/:netid', getTotalHours)
     // app.put('/user/:netid?', updateUser)
