@@ -111,6 +111,26 @@ const setUserMaxHour = (req, res) => {
 }
 
 /*
+Set the totalHour Property for a User
+url: /totalHours/:netid?
+
+Payload format: (req.body)
+e.g. {totalHours: 15}
+*/
+const setUserTotalHours = (req, res) => {
+    let netid = req.params.netid
+    let totalHours = req.body.totalHours
+    User.findOneAndUpdate({netid: netid}, {totalHours: totalHours}, {new: true}, (err, user) => {
+        if (err) {
+            res.send("Error Occurred")
+        }
+        else {
+            res.send(user)
+        }
+    });
+}
+
+/*
 Create a user entry in the database:
 url: /add/:netid?
 
@@ -243,6 +263,7 @@ module.exports = app => {
     app.get('/api/remove/:netid?', removeUser)
     app.put('/api/minHour/:netid?', setUserMinHour)
     app.put('/api/maxHour/:netid?', setUserMaxHour)
+    app.put('/api/totalHours/:netid?', setUserTotalHours)
     app.put('/api/add/:netid?', addUser)
     // app.get('/user/hours/:netid', getTotalHours)
     // app.put('/user/:netid?', updateUser)
