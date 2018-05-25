@@ -13,7 +13,7 @@ var UserSchema = new Schema({
 })
 
 
-var User = mongoose.model("Users", UserSchema)
+var User = mongoose.model("users", UserSchema)
 
 
 
