@@ -26,6 +26,6 @@ var ShiftSchema =
       })
 
 
-var Schedule = mongoose.model("schedules", ScheduleSchema, "newschedule")
+var Schedule = mongoose.model("schedules", ScheduleSchema, "schedules")
 
 exports.schedule = Schedule

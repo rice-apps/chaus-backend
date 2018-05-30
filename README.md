@@ -39,3 +39,9 @@
     - Keep in mind that your .env file will change depending on whether or not you are on dev or prod
 3.  npm run start
 4.  Access API at http://___________/api 
+
+## Handy terminal commands
+* To kill all node processes on a windows machine
+    ```
+        taskkill /im node.exe
+    ```
