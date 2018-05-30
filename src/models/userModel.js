@@ -7,7 +7,7 @@ var UserSchema = new Schema({
     netid:{type: String},
     firstName: {type: String},
     lastName: {type: String},
-    minHour: Number,
+    idealHours: Number,
     maxHour: Number,
     totalHours: Number
 })

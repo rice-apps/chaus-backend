@@ -64,22 +64,22 @@ const checkUser = (netid) => {
 }
 
 /*
-Set the MinHour Property for a User
-url: /minHour/:netid?
+Set the idealHour Property for a User
+url: /idealHours/:netid?
 
 PUT REQUEST
 
 Payload format: (req.body)
-e.g. {minHour: 8}
+e.g. {idealHours: 8}
 */
-const setUserMinHour = (req, res) => {
+const setUseridealHours = (req, res) => {
     // Get netid from url params
     let netid = req.params.netid
-    // Get minHour from request body
-    let minHour = req.body.minHour
+    // Get idealHours from request body
+    let idealHours = req.body.idealHours
     // Mongoose Call findOneAndUpdate; use {new: true} to send back the altered document
-    // Search for user by netid first, then change the minHour attribute
-    User.findOneAndUpdate({netid: netid}, {minHour: minHour}, {new: true}, (err, user) => {
+    // Search for user by netid first, then change the idealHours attribute
+    User.findOneAndUpdate({netid: netid}, {idealHours: idealHours}, {new: true}, (err, user) => {
         if (err) {
             res.send("Error Occurred.")
         }
@@ -135,7 +135,7 @@ Create a user entry in the database:
 url: /add/:netid?
 
 Payload format:  (req.body)
- e.g. {firstName: Will, lastName: Mundy, minHour: 8, maxHour: 16}
+ e.g. {firstName: Will, lastName: Mundy, idealHours: 8, maxHour: 10}
 
  */
 const addUser = (req, res) => {
@@ -150,14 +150,14 @@ const addUser = (req, res) => {
             console.log("length " + user.length);
             if (user.length === 0) {
                 //2. Create user if not already in database
-                let minHour = parseInt(req.body.minHour)
+                let idealHours = parseInt(req.body.idealHours)
                 let maxHour = parseInt(req.body.maxHour)
                 //TODO: do i need to check if the payload is the correct format?
 				var user = new User(
 				  {netid:req.params.netid,
 					firstName: req.body.firstName,
 					lastName: req.body.lastName,
-					minHour: minHour,
+					idealHours: idealHours,
 					maxHour: maxHour,
 					totalHours: 0 });
                 console.log(user);
@@ -261,7 +261,7 @@ module.exports = app => {
     app.get('/api/user/:netid?', getUser)
     app.get('/api/netids', getNetIDs)
     app.get('/api/remove/:netid?', removeUser)
-    app.put('/api/minHour/:netid?', setUserMinHour)
+    app.put('/api/idealHours/:netid?', setUseridealHours)
     app.put('/api/maxHour/:netid?', setUserMaxHour)
     app.put('/api/totalHours/:netid?', setUserTotalHours)
     app.put('/api/add/:netid?', addUser)
