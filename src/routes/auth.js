@@ -6,6 +6,7 @@ var jwt = require('jsonwebtoken');
 var request = require('request');
 var xmlParser = require('xml2js').parseString;
 var stripPrefix = require('xml2js').processors.stripPrefix;
+var config = require('../config');
 
 
 var User = require('../models/userModel').user;
@@ -23,7 +24,7 @@ const getAuth = (req, res) => {
     console.log("This is the ticket: " + ticket)
     if (ticket) {
         // validate our ticket against the CAS server
-        var url = `${process.env.CASValidateURL}?ticket=${ticket}&service=${process.env.thisServiceURL}`;
+        var url = `${config.CASValidateURL}?ticket=${ticket}&service=${config.thisServiceURL}`;
         request(url, (err, response, body) => {
 
             if (err) res.status(500).send();
@@ -50,7 +51,7 @@ const getAuth = (req, res) => {
                                 data: authSucceded,
                                 userID: user._id,
                                 // is_admin: user.is_admin
-                            }, process.env.secret);
+                            }, config.secret);
                             sendJSON(res, user._id, authSucceded.user, token);
                         }
                     });
