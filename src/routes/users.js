@@ -64,11 +64,78 @@ const checkUser = (netid) => {
 }
 
 /*
+Set the idealHour Property for a User
+url: /idealHour/:netid?
+
+PUT REQUEST
+
+Payload format: (req.body)
+e.g. {idealHour: 8}
+*/
+const setUserIdealHour = (req, res) => {
+    // Get netid from url params
+    let netid = req.params.netid
+    // Get idealHour from request body
+    let idealHour = req.body.idealHour
+    // Mongoose Call findOneAndUpdate; use {new: true} to send back the altered document
+    // Search for user by netid first, then change the idealHour attribute
+    User.findOneAndUpdate({netid: netid}, {idealHour: idealHour}, {new: true}, (err, user) => {
+        if (err) {
+            res.send("Error Occurred.")
+        }
+        else {
+            // Altered docu
+            res.send(user)
+        }
+    })
+}
+
+/*
+Set the MaxHour Property for a User
+url: /maxHour/:netid?
+
+Payload format: (req.body)
+e.g. {maxHour: 8}
+*/
+const setUserMaxHour = (req, res) => {
+    let netid = req.params.netid
+    let maxHour = req.body.maxHour
+    User.findOneAndUpdate({netid: netid}, {maxHour: maxHour}, {new: true}, (err, user) => {
+        if (err) {
+            res.send("Error Occurred.")
+        }
+        else {
+            res.send(user)
+        }
+    })
+}
+
+/*
+Set the totalHour Property for a User
+url: /totalHours/:netid?
+
+Payload format: (req.body)
+e.g. {totalHours: 15}
+*/
+const setUserTotalHours = (req, res) => {
+    let netid = req.params.netid
+    let totalHours = req.body.totalHours
+    User.findOneAndUpdate({netid: netid}, {totalHours: totalHours}, {new: true}, (err, user) => {
+        if (err) {
+            res.send("Error Occurred")
+        }
+        else {
+            res.send(user)
+        }
+    });
+}
+
+/*
 Create a user entry in the database:
 url: /add/:netid?
 
 Payload format:  (req.body)
- e.g. {firstName: Will, lastName: Mundy, minHour: 8, maxHour: 16}
+ e.g. {firstName: Will, lastName: Mundy, idealHours: 8, maxHour: 10}
 
  */
 const addUser = (req, res) => {
@@ -83,14 +150,15 @@ const addUser = (req, res) => {
             console.log("length " + user.length);
             if (user.length === 0) {
                 //2. Create user if not already in database
-                let minHour = parseInt(req.body.minHour)
-                let maxHour = parseInt(req.body.maxHour)
+                // Default values for users: 8 as ideal hour, 10 as max hour
+                let idealHour = 8
+                let maxHour = 10
                 //TODO: do i need to check if the payload is the correct format?
 				var user = new User(
 				  {netid:req.params.netid,
 					firstName: req.body.firstName,
 					lastName: req.body.lastName,
-					minHour: minHour,
+					idealHour: idealHour,
 					maxHour: maxHour,
 					totalHours: 0 });
                 console.log(user);
@@ -190,10 +258,21 @@ const removeUser = (req, res) => {
 
 }
 module.exports = app => {
+    // Get all users
     app.get('/api/users', getUsers)
+    // Get a specific user 
     app.get('/api/user/:netid?', getUser)
+    // Get all netids
     app.get('/api/netids', getNetIDs)
+    // Remove an user
     app.get('/api/remove/:netid?', removeUser)
+    // Sets idealHour/idealHour of user
+    app.put('/api/idealHour/:netid?', setUserIdealHour)
+    // Sets maxHour of user
+    app.put('/api/maxHour/:netid?', setUserMaxHour)
+    // Sets the totalHours of user 
+    app.put('/api/totalHours/:netid?', setUserTotalHours)
+    // Adds a user based on netid
     app.put('/api/add/:netid?', addUser)
     // app.get('/user/hours/:netid', getTotalHours)
     // app.put('/user/:netid?', updateUser)
