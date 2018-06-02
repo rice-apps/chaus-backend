@@ -58,19 +58,40 @@ const getEmployeeScheduled = (req, res) => {
 
 }
 
+/**
+ * 
+ * @param {*} shifts 
+ * @param {*} netid 
+ */
 const reformatShifts = (shifts, netid) => {
+  // {  
+  //   "shifts":{  
+  //      "Monday":[  
+  //         {  
+  //            "hour":7,
+  //            "available":0,
+  //            "changed":false,
+  //            "closed":false
+  //         }, ...
+
+
   // reformat shifts into (ordered sequence of objects):
   // {<employeename>: <preference>, changed: true/false}
   reformattedShifts = []
-  for (day in shifts) {
+
+  // Object.keys(shifts) starts at Monday, we need it to start on Sunday
+  let weekDays = Object.keys(shifts).splice(0, 6)
+  weekDays.splice(0, 0, 'Sunday')
+
+  weekDays.map(day => {
     let dayShifts = shifts[day]
     for (let i = 0; i < shifts[day].length; i++) {
+      if (dayShifts[i].changed) {
+      }
       reformattedShifts.push({[netid]: dayShifts[i].available, changed: dayShifts[i].changed})
-      // newShiftObject = {changed: dayShifts[i].changed}
-      // newShiftObject[netid] = dayShifts[i].available,
-      // reformattedShifts.push(newShiftObject)
     }
-  }
+  })
+
   return reformattedShifts
 }
 
