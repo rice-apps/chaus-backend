@@ -7,6 +7,11 @@ var UserSchema = new Schema({
     netid:{type: String},
     firstName: {type: String},
     lastName: {type: String},
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    },
     idealHour: Number,
     maxHour: Number,
     totalHours: Number

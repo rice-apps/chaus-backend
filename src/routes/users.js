@@ -40,6 +40,31 @@ const getNetIDs = (req, res) => {
     })
 }
 
+const getRole = (req, res) => {
+    var netid = req.params.netid;
+    User.findOne({netid}).exec((err, user) => {
+        if (err) {
+            res.send('error has occurred');
+        }
+        else {
+            res.send(user.role);
+        }
+    })
+}
+
+const setRole = (req, res) => {
+    var netid = req.params.netid;
+    var role = req.body.role;
+    User.findOneAndUpdate({netid}, {role: role}, {new: true}, (err, user) => {
+        if (err) {
+            res.send('Error occurred. Please try again');
+        }
+        else {
+            res.send(user);
+        }
+    })
+}
+
 /*
 Call: Helper function checkUser(jhw5)
 Effect: checks whether IDP logged user is in DB
@@ -266,6 +291,8 @@ module.exports = app => {
     app.get('/api/netids', getNetIDs)
     // Remove an user
     app.get('/api/remove/:netid?', removeUser)
+    // Check user role
+    app.get('/api/role/:netid?', getRole)
     // Sets idealHour/idealHour of user
     app.put('/api/idealHour/:netid?', setUserIdealHour)
     // Sets maxHour of user
@@ -274,6 +301,8 @@ module.exports = app => {
     app.put('/api/totalHours/:netid?', setUserTotalHours)
     // Adds a user based on netid
     app.put('/api/add/:netid?', addUser)
+    // Set user role
+    app.put('/api/role/:netid?', setRole)
     // app.get('/user/hours/:netid', getTotalHours)
     // app.put('/user/:netid?', updateUser)
 }
