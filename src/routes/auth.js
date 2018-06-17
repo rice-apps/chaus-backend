@@ -50,7 +50,7 @@ const getAuth = (req, res) => {
                             var token = jwt.sign({
                                 data: authSucceded,
                                 userID: user._id,
-                                // is_admin: user.is_admin
+                                role: user.role
                             }, config.secret);
                             sendJSON(res, user._id, authSucceded.user, token);
                         }
@@ -84,6 +84,18 @@ var sendJSON = function (res, userID, username, token) {
     });
 };
 
+const getRole = (req, res) => {
+    var token = req.params.token;
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if (err) {
+            res.send("Error Occurred");
+        }
+        var role = decoded.role;
+        res.send(role);
+    })
+}
+
 module.exports = app => {
     app.get('/api/auth', getAuth)
+    app.get('/api/auth/role/:token', getRole)
 }
