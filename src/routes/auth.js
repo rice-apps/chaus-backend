@@ -49,8 +49,7 @@ const getAuth = (req, res) => {
                         else {
                             var token = jwt.sign({
                                 data: authSucceded,
-                                userID: user._id,
-                                // is_admin: user.is_admin
+                                userID: user._id
                             }, config.secret);
                             sendJSON(res, user._id, authSucceded.user, token);
                         }

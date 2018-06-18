@@ -5,6 +5,9 @@ const User = require('../models/userModel').user
 const schedule = require('../models/scheduleModel').schedule;
 var mongoose = require('mongoose')
 mongoose.Promise = require('bluebird');
+// For JWT-related functions
+var jwt = require('jsonwebtoken');
+var config = require('../config');
 // Calls from employee.js
 const getEmployeeScheduled = require('./employee').getEmployeeScheduled
 
@@ -38,6 +41,50 @@ const getNetIDs = (req, res) => {
             res.send(netids)
         }
     })
+}
+
+const getRole = (req, res) => {
+    var netid = req.params.netid;
+    User.findOne({netid}).exec((err, user) => {
+        if (err) {
+            res.send('error has occurred');
+        }
+        else {
+            res.send(user.role);
+        }
+    })
+}
+
+const setRole = (req, res) => {
+    var netid = req.params.netid;
+    var role = req.body.role;
+    User.findOneAndUpdate({netid}, {role: role}, {new: true}, (err, user) => {
+        if (err) {
+            res.send('Error occurred. Please try again');
+        }
+        else {
+            res.send(user);
+        }
+    })
+}
+
+/*
+
+*/
+const getUserByToken = (req, res) => {
+    let token = req.params.token;
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if (err) {
+            res.send("Error Occurred. Please try again.");
+        }
+        let netid = decoded.data.user;
+        User.findOne({netid}).exec((err, user) => {
+            if (err) {
+                res.send("Error Occurred.")
+            }
+            res.json(user);
+        })
+    });
 }
 
 /*
@@ -266,6 +313,10 @@ module.exports = app => {
     app.get('/api/netids', getNetIDs)
     // Remove an user
     app.get('/api/remove/:netid?', removeUser)
+    // Check user role
+    app.get('/api/role/:netid?', getRole)
+    // Get active user info from JWT Token
+    app.get('/api/activeUser/:token', getUserByToken)
     // Sets idealHour/idealHour of user
     app.put('/api/idealHour/:netid?', setUserIdealHour)
     // Sets maxHour of user
@@ -274,6 +325,8 @@ module.exports = app => {
     app.put('/api/totalHours/:netid?', setUserTotalHours)
     // Adds a user based on netid
     app.put('/api/add/:netid?', addUser)
+    // Set user role
+    app.put('/api/role/:netid?', setRole)
     // app.get('/user/hours/:netid', getTotalHours)
     // app.put('/user/:netid?', updateUser)
 }
