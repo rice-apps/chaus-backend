@@ -7,13 +7,18 @@ var UserSchema = new Schema({
     netid:{type: String},
     firstName: {type: String},
     lastName: {type: String},
-    minHour: Number,
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    },
+    idealHour: Number,
     maxHour: Number,
     totalHours: Number
 })
 
 
-var User = mongoose.model("User", UserSchema)
+var User = mongoose.model("users", UserSchema)
 
 
 
