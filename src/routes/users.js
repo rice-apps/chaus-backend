@@ -5,6 +5,9 @@ const User = require('../models/userModel').user
 const schedule = require('../models/scheduleModel').schedule;
 var mongoose = require('mongoose')
 mongoose.Promise = require('bluebird');
+// For JWT-related functions
+var jwt = require('jsonwebtoken');
+var config = require('../config');
 // Calls from employee.js
 const getEmployeeScheduled = require('./employee').getEmployeeScheduled
 
@@ -63,6 +66,23 @@ const setRole = (req, res) => {
             res.send(user);
         }
     })
+}
+
+/*
+
+*/
+const getUserByToken = (req, res) => {
+    let token = req.params.token;
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if (err) {
+            res.send("Error Occurred. Please try again.");
+        }
+        let activeUserInfo = {
+            netid: decoded.data.user,
+            role: decoded.role
+        }
+        res.send(activeUserInfo);
+    });
 }
 
 /*
@@ -293,6 +313,8 @@ module.exports = app => {
     app.get('/api/remove/:netid?', removeUser)
     // Check user role
     app.get('/api/role/:netid?', getRole)
+    // Get active user info from JWT Token
+    app.get('/api/activeUser/:token', getUserByToken)
     // Sets idealHour/idealHour of user
     app.put('/api/idealHour/:netid?', setUserIdealHour)
     // Sets maxHour of user
