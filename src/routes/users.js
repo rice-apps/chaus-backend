@@ -77,11 +77,13 @@ const getUserByToken = (req, res) => {
         if (err) {
             res.send("Error Occurred. Please try again.");
         }
-        let activeUserInfo = {
-            netid: decoded.data.user,
-            role: decoded.role
-        }
-        res.send(activeUserInfo);
+        let netid = decoded.data.user;
+        User.findOne({netid}).exec((err, user) => {
+            if (err) {
+                res.send("Error Occurred.")
+            }
+            res.json(user);
+        })
     });
 }
 
