@@ -6,11 +6,13 @@ var mongoose = require('mongoose')
 
 // var url = 'mongodb://jhw5:jhw5@ds143449.mlab.com:43449/chaus'
 // var url = 'mongodb://localhost:27017/chaus_test'
-var url = process.env.db_uri
+var url = 'mongodb://ultrascheduler:kAtwdqi3Ehd)H@cluster0-shard-00-00-fy2jk.mongodb.net:27017,cluster0-shard-00-01-fy2jk.mongodb.net:27017,cluster0-shard-00-02-fy2jk.mongodb.net:27017/coffeehouse?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority'
 
-if (process.env.MONGOLAB_URI) {
-	url = process.env.MONGOLAB_URI;
-}
+// var url = process.env.db_uri
+
+// if (process.env.MONGOLAB_URI) {
+// 	url = process.env.MONGOLAB_URI;
+// }
 
 mongoose.connect(url)
 

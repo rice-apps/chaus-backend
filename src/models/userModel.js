@@ -12,8 +12,9 @@ var UserSchema = new Schema({
     totalHours: Number
 })
 
-
-var User = mongoose.model("users", UserSchema)
+console.log("Creating user model");
+var User = mongoose.model("users", UserSchema, "users")
+console.log("User model created.");
 
 
 

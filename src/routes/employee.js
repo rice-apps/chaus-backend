@@ -8,6 +8,10 @@ const getEmployeeAvailability = (req, res) => {
   // Gets entire schedule
   schedule.find({}).exec((err, shifts) => {
     // Array of shifts
+    if (shifts.length < 1) {
+      res.send([]);
+      return;
+    }
     let week = shifts[0].week
     if (err) {
       res.send('error has occurred')
@@ -39,6 +43,10 @@ const getEmployeeScheduled = (req, res) => {
   // Get entire schedule
   schedule.find({}).exec((err, shifts) => {
     // Array of shifts
+    if (shifts.length < 1) {
+      res.send([]);
+      return;
+    }
     let week = shifts[0].week
     if (err) {
       res.send("error has occurred")
